@@ -1,0 +1,1438 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Support - Tokenated NFT Marketplace</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+    <link
+      rel="shortcut icon"
+      href="assets/svg icons/darkLogo.svg"
+      type="image/x-icon"
+    />
+    <style>
+      html,
+      body {
+      background-color: #121212;
+      color: white;
+      min-height: 100vh;
+      background-image: 
+        radial-gradient(circle at 15% 50%, rgba(156, 58, 237, 0.15) 0%, transparent 30%),
+        radial-gradient(circle at 85% 30%, rgba(236, 72, 153, 0.15) 0%, transparent 30%);
+      background-size: 100% 100%;
+      background-attachment: fixed;
+    }
+    .support-card {
+      background-color: rgba(30, 30, 30, 0.7);
+      border-radius: 1rem;
+      transition: all 0.3s ease;
+    }
+    .support-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+    }
+    .support-icon {
+      background: linear-gradient(to right, #9c3aed, #ec4899);
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 100;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0, 0, 0, 0.4);
+      backdrop-filter: blur(5px);
+    }
+    .modal-content {
+      background: rgba(30, 30, 40, 0.8);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+      margin: 10% auto;
+      padding: 20px;
+      border-radius: 1rem;
+      width: 80%;
+      max-width: 600px;
+      animation: modalopen 0.3s;
+    }
+    @keyframes modalopen {
+      from {opacity: 0; transform: translateY(-50px);}
+      to {opacity: 1; transform: translateY(0);}
+    }
+    .close {
+      color: rgba(255, 255, 255, 0.6);
+      float: right;
+      font-size: 28px;
+      font-weight: bold;
+      transition: color 0.2s ease;
+    }
+    .close:hover,
+    .close:focus {
+      color: white;
+      text-decoration: none;
+      cursor: pointer;
+    }
+    .faq-item {
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 0.5rem;
+      margin-bottom: 1rem;
+      padding: 1rem;
+      border-left: 3px solid;
+      border-image: linear-gradient(to bottom, #9c3aed, #ec4899) 1;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .faq-item:hover {
+      transform: translateX(5px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+      
+      
+      .faq-answer {
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.5s ease;
+      }
+      
+      .faq-item.active .faq-answer {
+        max-height: 500px;
+      }
+      
+      
+    </style>
+  </head>
+  <body class="bg-gray-900 text-white">
+    <!-- Navigation -->
+    <nav
+      class="fixed w-full z-50 backdrop-blur-lg top-0 bg-gray-900/70 border-b border-gray-800/50"
+    >
+      <div class="w-[95%] mx-auto px-4 sm:px-6 lg:px-0">
+        <div class="flex items-center justify-between h-20">
+          <!-- Logo Section -->
+          <div class="flex items-center space-x-8">
+            <div class="flex-shrink-0">
+              <a href="index.html" class="flex items-center space-x-2 group">
+                <div
+                  class="w-10 h-10 bg-gradient-to-tr from-purple-600 to-pink-600 rounded-lg flex items-center justify-center transform group-hover:rotate-12 transition-transform duration-300"
+                >
+                  <img src="assets/svg icons/darkLogo.svg" alt="Logo" />
+                </div>
+                <span
+                  class="text-2xl font-bold bg-gradient-to-r from-purple-400 to-pink-500 text-transparent bg-clip-text"
+                  >Tokenated</span
+                >
+              </a>
+            </div>
+
+           
+        </div>
+      </div>
+    </nav>
+
+    <!-- Mobile Search Overlay -->
+    <div
+      id="searchOverlay"
+      class="fixed inset-0 bg-gray-900/95 z-40 p-4 flex flex-col items-center justify-start pt-24 hidden"
+    >
+      <div class="w-full max-w-md">
+        <div class="relative">
+          <input
+            type="search"
+            class="bg-gray-800/40 rounded-2xl pl-10 pr-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500 w-full"
+            placeholder="Search support topics..."
+          />
+          <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-5 w-5"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+              />
+            </svg>
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <section class="pt-32 pb-16 px-4">
+        <div class="max-w-7xl mx-auto text-center">
+          <h1 class="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-purple-400 to-pink-500 text-transparent bg-clip-text">
+            How Can We Help You?
+          </h1>
+          <p class="text-gray-300 max-w-2xl mx-auto mb-10">
+            Find answers to common questions, contact our support team, or explore our knowledge base.
+          </p>
+          <div class="relative mx-auto max-w-2xl">
+            <input
+              id="searchInput"
+              type="search"
+              class="bg-gray-800/40 rounded-2xl pl-12 pr-4 py-4 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500 w-full"
+              placeholder="Search for help topics..."
+            />
+            <span class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-6 w-6"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                />
+              </svg>
+            </span>
+          </div>
+        </div>
+      </section>
+    
+      <!-- Support Categories -->
+      <section class="py-12 px-4">
+        <div class="max-w-7xl mx-auto">
+          <h2 class="text-2xl md:text-3xl font-bold mb-10 text-center">Support Categories</h2>
+          <div id="categoriesContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- Category 1 -->
+            <div class="support-card p-6" data-category="wallet">
+              <div class="flex items-center space-x-4 mb-4">
+                <div class="support-icon">
+                  <i class="fas fa-wallet text-white text-xl"></i>
+                </div>
+                <h3 class="text-xl font-semibold">Wallet Issues</h3>
+              </div>
+              <p class="text-gray-300 mb-4">
+                Get help connecting your wallet, troubleshooting transactions, and managing your account.
+              </p>
+              <a
+                href="#"
+                class="modal-open inline-flex items-center text-purple-400 hover:text-purple-300 transition-colors"
+                data-modal="walletModal"
+              >
+                <span>Learn more</span>
+                <svg
+                  class="w-4 h-4 ml-2"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M14 5l7 7m0 0l-7 7m7-7H3"
+                  />
+                </svg>
+              </a>
+            </div>
+    
+            <!-- Category 2 -->
+            <div class="support-card p-6" data-category="buying nfts purchase bid auction gas fees">
+              <div class="flex items-center space-x-4 mb-4">
+                <div class="support-icon">
+                  <i class="fas fa-shopping-cart text-white text-xl"></i>
+                </div>
+                <h3 class="text-xl font-semibold">Buying NFTs</h3>
+              </div>
+              <p class="text-gray-300 mb-4">
+                Learn how to purchase NFTs, place bids in auctions, and understand gas fees.
+              </p>
+              <a
+                href="#"
+                class="modal-open inline-flex items-center text-purple-400 hover:text-purple-300 transition-colors"
+                data-modal="buyingModal"
+              >
+                <span>Learn more</span>
+                <svg
+                  class="w-4 h-4 ml-2"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M14 5l7 7m0 0l-7 7m7-7H3"
+                  />
+                </svg>
+              </a>
+            </div>
+    
+            <!-- Category 3 -->
+            <div class="support-card p-6" data-category="creating nfts mint upload asset collection">
+              <div class="flex items-center space-x-4 mb-4">
+                <div class="support-icon">
+                  <i class="fas fa-paint-brush text-white text-xl"></i>
+                </div>
+                <h3 class="text-xl font-semibold">Creating NFTs</h3>
+              </div>
+              <p class="text-gray-300 mb-4">
+                Get assistance with minting, uploading assets, and publishing your collections.
+              </p>
+              <a
+                href="#"
+                class="modal-open inline-flex items-center text-purple-400 hover:text-purple-300 transition-colors"
+                data-modal="creatingModal"
+              >
+                <span>Learn more</span>
+                <svg
+                  class="w-4 h-4 ml-2"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M14 5l7 7m0 0l-7 7m7-7H3"
+                  />
+                </svg>
+              </a>
+            </div>
+    
+            <!-- Category 4 -->
+            <div class="support-card p-6" data-category="selling nfts list price payment">
+              <div class="flex items-center space-x-4 mb-4">
+                <div class="support-icon">
+                  <i class="fas fa-tag text-white text-xl"></i>
+                </div>
+                <h3 class="text-xl font-semibold">Selling NFTs</h3>
+              </div>
+              <p class="text-gray-300 mb-4">
+                Learn about listing items for sale, setting prices, and receiving payments.
+              </p>
+              <a
+                href="#"
+                class="modal-open inline-flex items-center text-purple-400 hover:text-purple-300 transition-colors"
+                data-modal="sellingModal"
+              >
+                <span>Learn more</span>
+                <svg
+                  class="w-4 h-4 ml-2"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M14 5l7 7m0 0l-7 7m7-7H3"
+                  />
+                </svg>
+              </a>
+            </div>
+    
+            <!-- Category 5 -->
+            <div class="support-card p-6" data-category="security account protection scam fraud safety">
+              <div class="flex items-center space-x-4 mb-4">
+                <div class="support-icon">
+                  <i class="fas fa-shield-alt text-white text-xl"></i>
+                </div>
+                <h3 class="text-xl font-semibold">Security</h3>
+              </div>
+              <p class="text-gray-300 mb-4">
+                Protect your account, avoid scams, and learn about our security measures.
+              </p>
+              <a
+                href="#"
+                class="modal-open inline-flex items-center text-purple-400 hover:text-purple-300 transition-colors"
+                data-modal="securityModal"
+              >
+                <span>Learn more</span>
+                <svg
+                  class="w-4 h-4 ml-2"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M14 5l7 7m0 0l-7 7m7-7H3"
+                  />
+                </svg>
+              </a>
+            </div>
+    
+            <!-- Category 6 -->
+            <div class="support-card p-6" data-category="payments cryptocurrency crypto conversion transaction fees">
+              <div class="flex items-center space-x-4 mb-4">
+                <div class="support-icon">
+                  <i class="fas fa-credit-card text-white text-xl"></i>
+                </div>
+                <h3 class="text-xl font-semibold">Payments</h3>
+              </div>
+              <p class="text-gray-300 mb-4">
+                Understand payment options, cryptocurrency conversions, and transaction fees.
+              </p>
+              <a
+                href="#"
+                class="modal-open inline-flex items-center text-purple-400 hover:text-purple-300 transition-colors"
+                data-modal="paymentModal"
+              >
+                <span>Learn more</span>
+                <svg
+                  class="w-4 h-4 ml-2"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M14 5l7 7m0 0l-7 7m7-7H3"
+                  />
+                </svg>
+              </a>
+            </div>
+            <div id="imprintsModal" class="modal">
+              <div class="modal-content">
+                <span class="close">&times;</span>
+                <h2 class="text-2xl font-bold mb-4 bg-gradient-to-r from-purple-400 to-pink-500 text-transparent bg-clip-text">Imprints</h2>
+                <div class="space-y-4">
+                  <div class="faq-item">
+                    <h3 class="text-lg font-semibold text-purple-300">What are Imprints?</h3>
+                    <p class="text-gray-300">Imprints <svg class="w-4 h-4 nft-icon inline-block ml-1" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M15 7C16.6569 7 18 8.34315 18 10C18 11.6569 16.6569 13 15 13C13.3431 13 12 11.6569 12 10C12 8.34315 13.3431 7 15 7Z" stroke="currentColor" stroke-width="2"/>
+                      <path d="M12 13L3 22M7 17H3V21" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                      <path d="M19 10H21M15 14V16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    </svg> are Tokenated's social engagement feature that allows you to show appreciation for NFTs you admire. Similar to "likes" on social platforms, Imprints help creators gain visibility and allow collectors to bookmark their favorite pieces.</p>
+                  </div>
+                  <div class="faq-item">
+                    <h3 class="text-lg font-semibold text-purple-300">How to Imprint an NFT</h3>
+                    <p class="text-gray-300">To Imprint an NFT, simply click the Imprint icon <svg class="w-4 h-4 nft-icon inline-block ml-1" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M15 7C16.6569 7 18 8.34315 18 10C18 11.6569 16.6569 13 15 13C13.3431 13 12 11.6569 12 10C12 8.34315 13.3431 7 15 7Z" stroke="currentColor" stroke-width="2"/>
+                      <path d="M12 13L3 22M7 17H3V21" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                      <path d="M19 10H21M15 14V16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    </svg> displayed on any NFT card or detail page. Your Imprint is recorded on-chain, creating a permanent connection between you and the artwork you appreciate.</p>
+                  </div>
+                  <div class="faq-item">
+                    <h3 class="text-lg font-semibold text-purple-300">Benefits of Imprints</h3>
+                    <p class="text-gray-300">Imprinting NFTs helps boost their visibility in search results and trending collections. For collectors, your Imprinted items are saved in your profile's "Imprints" tab, making it easy to revisit pieces you've shown interest in. Some creators also offer special benefits to users who Imprint their collections.</p>
+                  </div>
+                  <div class="faq-item">
+                    <h3 class="text-lg font-semibold text-purple-300">Imprint Analytics</h3>
+                    <p class="text-gray-300">Creators can access Imprint analytics in their dashboard to see which pieces are receiving the most engagement. This data can help inform future creative decisions and pricing strategies.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Request NFT Modal -->
+            <div id="requestModal" class="modal">
+              <div class="modal-content">
+                <span class="close">&times;</span>
+                <h2 class="text-2xl font-bold mb-4 bg-gradient-to-r from-purple-400 to-pink-500 text-transparent bg-clip-text">Request Functionality</h2>
+                <div class="space-y-4">
+                  <div class="faq-item">
+                    <h3 class="text-lg font-semibold text-purple-300">What is the Request feature?</h3>
+                    <p class="text-gray-300">The Request feature allows you to express interest in purchasing NFTs that aren't currently listed for sale. This signals to owners that there's demand for their NFTs and encourages them to consider listing.</p>
+                  </div>
+                  <div class="faq-item">
+                    <h3 class="text-lg font-semibold text-purple-300">How to request an unlisted NFT</h3>
+                    <p class="text-gray-300">When viewing an unlisted NFT's detail page, click the "Request to List" button. You'll be prompted to enter an offer price (optional) and a message to the owner explaining your interest. The owner will receive a notification of your request.</p>
+                  </div>
+                  <div class="faq-item">
+                    <h3 class="text-lg font-semibold text-purple-300">As an NFT owner</h3>
+                    <p class="text-gray-300">If you own an NFT and receive listing requests, you'll be notified in your dashboard and via email (if enabled). You can view all requests, including offered prices, and choose to list your NFT directly from the request notification.</p>
+                  </div>
+                  <div class="faq-item">
+                    <h3 class="text-lg font-semibold text-purple-300">Request limits</h3>
+                    <p class="text-gray-300">To prevent spam, there's a limit of 10 active requests per user per day. Additionally, owners can choose to disable requests for specific NFTs in their collection settings.</p>
+                  </div>
+                  <div class="faq-item">
+                    <h3 class="text-lg font-semibold text-purple-300">Privacy considerations</h3>
+                    <p class="text-gray-300">When you make a request, your profile information is shared with the NFT owner. Your offered price is only visible to the owner, not to other users who may also be requesting the same NFT.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Add these to your support categories section -->
+            <div class="support-card p-6" data-category="imprints like appreciation social engagement">
+              <div class="flex items-center space-x-4 mb-4">
+                <div class="support-icon">
+                  <svg class="w-5 h-5 text-white" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M15 7C16.6569 7 18 8.34315 18 10C18 11.6569 16.6569 13 15 13C13.3431 13 12 11.6569 12 10C12 8.34315 13.3431 7 15 7Z" stroke="currentColor" stroke-width="2"/>
+                    <path d="M12 13L3 22M7 17H3V21" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    <path d="M19 10H21M15 14V16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                  </svg>
+                </div>
+                <h3 class="text-xl font-semibold">Imprints</h3>
+              </div>
+              <p class="text-gray-300 mb-4">
+                Learn about our social engagement feature for showing appreciation and bookmarking your favorite NFTs.
+              </p>
+              <a
+                href="#"
+                class="modal-open inline-flex items-center text-purple-400 hover:text-purple-300 transition-colors"
+                data-modal="imprintsModal"
+              >
+                <span>Learn more</span>
+                <svg
+                  class="w-4 h-4 ml-2"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M14 5l7 7m0 0l-7 7m7-7H3"
+                  />
+                </svg>
+              </a>
+            </div>
+            
+            <div class="support-card p-6" data-category="request unlisted nft purchase interest">
+              <div class="flex items-center space-x-4 mb-4">
+                <div class="support-icon">
+                  <i class="fas fa-hand-paper text-white text-xl"></i>
+                </div>
+                <h3 class="text-xl font-semibold">Request Functionality</h3>
+              </div>
+              <p class="text-gray-300 mb-4">
+                Discover how to request owners to list their unlisted NFTs and respond to listing requests.
+              </p>
+              <a
+                href="#"
+                class="modal-open inline-flex items-center text-purple-400 hover:text-purple-300 transition-colors"
+                data-modal="requestModal"
+              >
+                <span>Learn more</span>
+                <svg
+                  class="w-4 h-4 ml-2"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M14 5l7 7m0 0l-7 7m7-7H3"
+                  />
+                </svg>
+              </a>
+            </div>
+          </div>
+        </div>
+        
+      </section>
+    
+      
+      <!-- Modals -->
+      <!-- Wallet Modal -->
+      <div id="walletModal" class="modal">
+        <div class="modal-content">
+          <span class="close">&times;</span>
+          <h2 class="text-2xl font-bold mb-4 bg-gradient-to-r from-purple-400 to-pink-500 text-transparent bg-clip-text">Wallet Issues</h2>
+          <div class="space-y-4">
+            <div class="faq-item">
+              <h3 class="text-lg font-semibold text-purple-300">How do I connect my wallet?</h3>
+              <p class="text-gray-300">Click the "Connect Wallet" button in the top right corner of the page. You'll see options for MetaMask, WalletConnect and MetaMask Select your preferred wallet and follow the prompts to connect.</p>
+            </div>
+            <div class="faq-item">
+              <h3 class="text-lg font-semibold text-purple-300">Why is my transaction pending?</h3>
+              <p class="text-gray-300">Transactions may be pending due to network congestion or if you've set a gas fee that's too low. You can speed up the transaction by increasing the gas fee through your wallet's settings.</p>
+            </div>
+            <div class="faq-item">
+              <h3 class="text-lg font-semibold text-purple-300">I don't see my NFTs in my wallet</h3>
+              <p class="text-gray-300">Make sure you're connected to the correct network (Base) and that your wallet supports viewing NFTs. Some wallets require you to manually add the NFT contract address to view your tokens.</p>
+            </div>
+            <div class="faq-item">
+              <h3 class="text-lg font-semibold text-purple-300">How do I manage multiple wallets?</h3>
+              <p class="text-gray-300">You can connect multiple wallets to your account in your profile settings. This allows you to view and manage assets across different wallets from a single dashboard.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    
+      <!-- Buying NFTs Modal -->
+      <div id="buyingModal" class="modal">
+        <div class="modal-content">
+          <span class="close">&times;</span>
+          <h2 class="text-2xl font-bold mb-4 bg-gradient-to-r from-purple-400 to-pink-500 text-transparent bg-clip-text">Buying NFTs</h2>
+          <div class="space-y-4">
+            <div class="faq-item">
+              <h3 class="text-lg font-semibold text-purple-300">How to purchase an NFT</h3>
+              <p class="text-gray-300">Browse collections, find an NFT you like, and click "Buy Now" or "Place Bid" depending on the listing type. Confirm the purchase in your wallet when prompted and wait for the transaction to complete.</p>
+            </div>
+            <div class="faq-item">
+              <h3 class="text-lg font-semibold text-purple-300">Understanding auctions</h3>
+              <p class="text-gray-300">For auction listings, you'll need to place a bid above the current highest bid. If you win, you'll be prompted to complete the purchase when the auction ends. If you're outbid, your funds will be returned to your wallet.</p>
+            </div>
+            <div class="faq-item">
+              <h3 class="text-lg font-semibold text-purple-300">What are gas fees?</h3>
+              <p class="text-gray-300">Gas fees are transaction costs paid to the network for processing your purchase. These fees vary based on network congestion. We recommend buying during off-peak hours to save on gas fees.</p>
+            </div>
+            <div class="faq-item">
+              <h3 class="text-lg font-semibold text-purple-300">Failed transactions</h3>
+              <p class="text-gray-300">If your transaction fails, you may still be charged gas fees even though the purchase wasn't completed. This is because the network still processed your transaction attempt. Try again with a higher gas limit or during lower congestion times.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    
+      <!-- Creating NFTs Modal -->
+      <div id="creatingModal" class="modal">
+        <div class="modal-content">
+          <span class="close">&times;</span>
+          <h2 class="text-2xl font-bold mb-4 bg-gradient-to-r from-purple-400 to-pink-500 text-transparent bg-clip-text">Creating NFTs</h2>
+          <div class="space-y-4">
+            <div class="faq-item">
+              <h3 class="text-lg font-semibold text-purple-300">How to mint an NFT</h3>
+              <p class="text-gray-300">Go to the "Create" section, upload your digital asset (image, video, audio, etc.), fill in the details like title, description, and properties, select your blockchain, and click "Create". Confirm the transaction in your wallet.</p>
+            </div>
+            <div class="faq-item">
+              <h3 class="text-lg font-semibold text-purple-300">File types and sizes</h3>
+              <p class="text-gray-300">We support JPG, PNG, GIF, SVG, MP4, WEBM, MP3, WAV, OGG, GLB, GLTF for NFTs. Maximum file size is 100MB for most types. For optimal performance, we recommend keeping files under 50MB.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    
+      <!-- Selling NFTs Modal -->
+      <div id="sellingModal" class="modal">
+        <div class="modal-content">
+          <span class="close">&times;</span>
+          <h2 class="text-2xl font-bold mb-4 bg-gradient-to-r from-purple-400 to-pink-500 text-transparent bg-clip-text">Selling NFTs</h2>
+          <div class="space-y-4">
+            <div class="faq-item">
+              <h3 class="text-lg font-semibold text-purple-300">How to list an NFT for sale</h3>
+              <p class="text-gray-300">Go to your profile, select the NFT you want to sell, click "Sell", choose between fixed price or timed auction, set your price and duration, and confirm the listing. You'll need to approve the marketplace to sell your NFT.</p>
+            </div>
+            <div class="faq-item">
+              <h3 class="text-lg font-semibold text-purple-300">Setting the right price</h3>
+              <p class="text-gray-300">Research similar NFTs in your category to determine a competitive price. Consider your following, the uniqueness of your work, and current market conditions. Starting with a lower price can help attract initial buyers.</p>
+            </div>
+            <div class="faq-item">
+              <h3 class="text-lg font-semibold text-purple-300">Royalties</h3>
+              <p class="text-gray-300">Royalties allow you to earn a percentage of all future sales of your NFT. You can set royalties (typically 5-10%) when creating a collection or individual NFT. These royalties are automatically paid to you when your NFT is resold.</p>
+            </div>
+            <div class="faq-item">
+              <h3 class="text-lg font-semibold text-purple-300">Receiving payments</h3>
+              <p class="text-gray-300">When your NFT sells, the payment (minus platform fees) will be sent directly to your connected wallet. This can be instant or take a few minutes to process.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    
+      <!-- Security Modal -->
+      <div id="securityModal" class="modal">
+        <div class="modal-content">
+          <span class="close">&times;</span>
+          <h2 class="text-2xl font-bold mb-4 bg-gradient-to-r from-purple-400 to-pink-500 text-transparent bg-clip-text">Security</h2>
+          <div class="space-y-4">
+            <div class="faq-item">
+              <h3 class="text-lg font-semibold text-purple-300">Protecting your wallet</h3>
+              <p class="text-gray-300">Never share your private keys or seed phrase with anyone. Use a hardware wallet for large holdings. Enable two-factor authentication where available, and be careful about which sites you connect your wallet to.</p>
+            </div>
+            <div class="faq-item">
+              <h3 class="text-lg font-semibold text-purple-300">Avoiding scams</h3>
+              <p class="text-gray-300">Be wary of offers that seem too good to be true, messages asking you to urgently send cryptocurrency, fake websites, and unsolicited NFT airdrops. Always verify the authenticity of collections before purchasing.</p>
+            </div>
+            <div class="faq-item">
+              <h3 class="text-lg font-semibold text-purple-300">Reporting suspicious activity</h3>
+              <p class="text-gray-300">If you encounter a scam or suspicious activity, report it immediately through our "Report" feature. Provide as many details as possible to help our security team investigate the issue.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    
+      <!-- Payment Modal -->
+      <div id="paymentModal" class="modal">
+        <div class="modal-content">
+          <span class="close">&times;</span>
+          <h2 class="text-2xl font-bold mb-4 bg-gradient-to-r from-purple-400 to-pink-500 text-transparent bg-clip-text">Payments</h2>
+          <div class="space-y-4">
+            <div class="faq-item">
+              <h3 class="text-lg font-semibold text-purple-300">Payment options</h3>
+              <p class="text-gray-300">We accept Ethereum (ETH), Polygon (MATIC), and select ERC-20 tokens for purchases. You can also use credit/debit cards through our fiat on-ramp partners for select NFTs.</p>
+            </div>
+            <div class="faq-item">
+              <h3 class="text-lg font-semibold text-purple-300">Cryptocurrency conversions</h3>
+              <p class="text-gray-300">If you need to convert between cryptocurrencies, you can use integrated swap features in many wallets or external exchanges. Be aware of conversion fees and price slippage during swaps.</p>
+            </div>
+            <div class="faq-item">
+              <h3 class="text-lg font-semibold text-purple-300">Understanding transaction fees</h3>
+              <p class="text-gray-300">Our platform charges a 2.5% fee on all transactions. Additionally, you'll pay gas fees to the blockchain network. Gas fees vary based on network congestion and complexity of the transaction.</p>
+            </div>
+            <div class="faq-item">
+              <h3 class="text-lg font-semibold text-purple-300">Tax implications</h3>
+              <p class="text-gray-300">Buying and selling NFTs may have tax implications in your jurisdiction. We recommend consulting with a tax professional about reporting requirements for cryptocurrency transactions and NFT sales.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      
+    <!-- FAQ Section -->
+    <section class="py-16 px-4 bg-gray-800/30">
+      <div class="max-w-5xl mx-auto">
+        <h2 class="text-2xl md:text-3xl font-bold mb-2 text-center">Frequently Asked Questions</h2>
+        <p class="text-gray-300 text-center mb-12">Find answers to the most common questions</p>
+
+        <!-- Wallet FAQs -->
+        <div id="wallet-faq" class="mb-12">
+          <h3 class="text-xl font-semibold mb-6 flex items-center">
+            <i class="fas fa-wallet mr-3 text-purple-400"></i>
+            Wallet Issues
+          </h3>
+          
+          <!-- FAQ Item -->
+          <div class="faq-item mb-4 overflow-hidden">
+            <div class="faq-question p-5 cursor-pointer flex items-center justify-between bg-gray-800/50 rounded-t-lg">
+              <h4 class="font-medium">How do I connect my wallet to Tokenated?</h4>
+              <i class="fas fa-chevron-down text-gray-400 transition-transform duration-300"></i>
+            </div>
+            <div class="faq-answer bg-gray-800/20 rounded-b-lg px-5 py-0">
+              <div class="py-4 text-gray-300">
+                <p>To connect your wallet to Tokenated:</p>
+                <ol class="list-decimal ml-5 mt-2 space-y-2">
+                  <li>Click the "Connect Wallet" button in the top-right corner of the page.</li>
+                  <li>Select your preferred wallet provider (MetaMask, WalletConnect.).</li>
+                  <li>Follow the prompts in your wallet to authorize the connection.</li>
+                  <li>Once connected, your wallet address will appear in the navigation bar.</li>
+                </ol>
+                <p class="mt-3">If you encounter any issues, make sure your wallet is properly set up and you have the necessary browser extensions installed.</p>
+              </div>
+            </div>
+          </div>
+          
+          <!-- FAQ Item -->
+          <div class="faq-item mb-4 overflow-hidden">
+            <div class="faq-question p-5 cursor-pointer flex items-center justify-between bg-gray-800/50 rounded-t-lg">
+              <h4 class="font-medium">Why won't my transactions confirm?</h4>
+              <i class="fas fa-chevron-down text-gray-400 transition-transform duration-300"></i>
+            </div>
+            <div class="faq-answer bg-gray-800/20 rounded-b-lg px-5 py-0">
+              <div class="py-4 text-gray-300">
+                <p>Transaction issues could be due to several factors:</p>
+                <ul class="list-disc ml-5 mt-2 space-y-2">
+                  <li>Insufficient gas fees: Try increasing your gas limit for faster confirmation.</li>
+                  <li>Network congestion: During peak times, transactions may take longer to process.</li>
+                  <li>Low balance: Ensure you have enough cryptocurrency to cover both the purchase and gas fees.</li>
+                  <li>Wallet connection issues: Try refreshing the page or reconnecting your wallet.</li>
+                </ul>
+                <p class="mt-3">If problems persist, check your transaction status on the blockchain explorer or contact our support team.</p>
+              </div>
+            </div>
+          </div>
+          
+          <!-- FAQ Item -->
+          <div class="faq-item mb-4 overflow-hidden">
+            <div class="faq-question p-5 cursor-pointer flex items-center justify-between bg-gray-800/50 rounded-t-lg">
+              <h4 class="font-medium">Which wallets are supported on Tokenated?</h4>
+              <i class="fas fa-chevron-down text-gray-400 transition-transform duration-300"></i>
+            </div>
+            <div class="faq-answer bg-gray-800/20 rounded-b-lg px-5 py-0">
+              <div class="py-4 text-gray-300">
+                <p>Tokenated currently supports the following wallets:</p>
+                <ul class="list-disc ml-5 mt-2 grid grid-cols-2 gap-2">
+                  <li>MetaMask</li>
+                  <li>WalletConnect</li>
+                </ul>
+                <p class="mt-3">We're continuously adding support for more wallets. Check back regularly for updates.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Buying NFTs FAQs -->
+        <div id="buying-faq" class="mb-12">
+          <h3 class="text-xl font-semibold mb-6 flex items-center">
+            <i class="fas fa-shopping-cart mr-3 text-purple-400"></i>
+            Buying NFTs
+          </h3>
+          
+          <!-- FAQ Item -->
+          <div class="faq-item mb-4 overflow-hidden">
+            <div class="faq-question p-5 cursor-pointer flex items-center justify-between bg-gray-800/50 rounded-t-lg">
+              <h4 class="font-medium">How do I purchase an NFT on Tokenated?</h4>
+              <i class="fas fa-chevron-down text-gray-400 transition-transform duration-300"></i>
+            </div>
+            <div class="faq-answer bg-gray-800/20 rounded-b-lg px-5 py-0">
+              <div class="py-4 text-gray-300">
+                <p>To purchase an NFT on our marketplace:</p>
+                <ol class="list-decimal ml-5 mt-2 space-y-2">
+                  <li>Connect your wallet to Tokenated.</li>
+                  <li>Browse the marketplace and find an NFT you want to purchase.</li>
+                  <li>Click on the NFT to view its details.</li>
+                  <li>If it's a fixed-price sale, click "Buy Now" and confirm the transaction in your wallet.</li>
+                  <li>If it's an auction, place a bid by entering your offer amount and clicking "Place Bid".</li>
+                  <li>Wait for the transaction to be confirmed on the blockchain.</li>
+                  <li>Once confirmed, the NFT will appear in your collection.</li>
+                </ol>
+              </div>
+            </div>
+          </div>
+          
+          <!-- FAQ Item -->
+          <div class="faq-item mb-4 overflow-hidden">
+            <div class="faq-question p-5 cursor-pointer flex items-center justify-between bg-gray-800/50 rounded-t-lg">
+              <h4 class="font-medium">What are gas fees and why do I need to pay them?</h4>
+              <i class="fas fa-chevron-down text-gray-400 transition-transform duration-300"></i>
+            </div>
+            <div class="faq-answer bg-gray-800/20 rounded-b-lg px-5 py-0">
+              <div class="py-4 text-gray-300">
+                <p>Gas fees are payments made to compensate for the computing energy required to process and validate transactions on the blockchain. These fees are necessary for several reasons:</p>
+                <ul class="list-disc ml-5 mt-2 space-y-2">
+                  <li>They incentivize miners/validators to include your transaction in the next block.</li>
+                  <li>They help prevent spam and denial-of-service attacks on the network.</li>
+                  <li>They allocate the network's limited resources efficiently.</li>
+                </ul>
+                <p class="mt-3">Gas fees fluctuate based on network congestion. For lower fees, try conducting transactions during off-peak hours.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Creating NFTs FAQs -->
+        <div id="creating-faq" class="mb-12">
+          <h3 class="text-xl font-semibold mb-6 flex items-center">
+            <i class="fas fa-paint-brush mr-3 text-purple-400"></i>
+            Creating NFTs
+          </h3>
+          
+          <!-- FAQ Item -->
+          <div class="faq-item mb-4 overflow-hidden">
+            <div class="faq-question p-5 cursor-pointer flex items-center justify-between bg-gray-800/50 rounded-t-lg">
+                <h4 class="font-medium">How do I create and mint my first NFT?</h4>
+                <i class="fas fa-chevron-down text-gray-400 transition-transform duration-300"></i>
+              </div>
+              <div class="faq-answer bg-gray-800/20 rounded-b-lg px-5 py-0">
+                <div class="py-4 text-gray-300">
+                  <p>Creating your first NFT on Tokenated is simple:</p>
+                  <ol class="list-decimal ml-5 mt-2 space-y-2">
+                    <li>Connect your wallet and navigate to the "Create" page.</li>
+                    <li>Upload your digital asset (image, video, audio, or 3D model).</li>
+                    <li>Fill in the details: name, description, properties, and royalties.</li>
+                    <li>Choose whether to create a single NFT or a collection.</li>
+                    <li>Click "Create" and confirm the transaction in your wallet.</li>
+                    <li>Pay the gas fee to mint your NFT on the blockchain.</li>
+                    <li>Once minted, your NFT will appear in your profile and can be listed for sale.</li>
+                  </ol>
+                </div>
+              </div>
+            </div>
+            
+            <!-- FAQ Item -->
+            <div class="faq-item mb-4 overflow-hidden">
+              <div class="faq-question p-5 cursor-pointer flex items-center justify-between bg-gray-800/50 rounded-t-lg">
+                <h4 class="font-medium">What file formats are supported for NFTs?</h4>
+                <i class="fas fa-chevron-down text-gray-400 transition-transform duration-300"></i>
+              </div>
+              <div class="faq-answer bg-gray-800/20 rounded-b-lg px-5 py-0">
+                <div class="py-4 text-gray-300">
+                  <p>Tokenated supports the following file formats:</p>
+                  <ul class="grid grid-cols-2 gap-2 ml-5 mt-2 list-disc">
+                    <li><strong>Images:</strong> JPG, PNG, GIF, SVG (max 100MB)</li>
+                    <li><strong>Videos:</strong> MP4, WEBM (max 1GB)</li>
+                    <li><strong>Audio:</strong> MP3, WAV, OGG (max 100MB)</li>
+                  </ul>
+                  <p class="mt-3">For the best experience, we recommend optimizing your files before uploading. Large files may take longer to display and interact with on the marketplace.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+  
+          <!-- Selling NFTs FAQs -->
+          <div id="selling-faq" class="mb-12">
+            <h3 class="text-xl font-semibold mb-6 flex items-center">
+              <i class="fas fa-tag mr-3 text-purple-400"></i>
+              Selling NFTs
+            </h3>
+            
+            <!-- FAQ Item -->
+            <div class="faq-item mb-4 overflow-hidden">
+              <div class="faq-question p-5 cursor-pointer flex items-center justify-between bg-gray-800/50 rounded-t-lg">
+                <h4 class="font-medium">How do I list my NFT for sale?</h4>
+                <i class="fas fa-chevron-down text-gray-400 transition-transform duration-300"></i>
+              </div>
+              <div class="faq-answer bg-gray-800/20 rounded-b-lg px-5 py-0">
+                <div class="py-4 text-gray-300">
+                  <p>To list your NFT for sale on Tokenated:</p>
+                  <ol class="list-decimal ml-5 mt-2 space-y-2">
+                    <li>Navigate to your profile and select the NFT you want to sell.</li>
+                    <li>Click the "Sell" button on the NFT detail page.</li>
+                    <li>Choose your sale type: Fixed Price or Timed Auction.</li>
+                    <li>For Fixed Price: Set your desired price in ETH or other supported cryptocurrencies.</li>
+                    <li>For Timed Auction: Set a starting price, reserve price (optional), and auction duration.</li>
+                    <li>Set your royalty percentage for secondary sales (between 0-10%).</li>
+                    <li>Click "Complete Listing" and approve the transaction in your wallet.</li>
+                  </ol>
+                  <p class="mt-3">Your NFT will be listed immediately after blockchain confirmation.</p>
+                </div>
+              </div>
+            </div>
+            
+            <!-- FAQ Item -->
+            <div class="faq-item mb-4 overflow-hidden">
+              <div class="faq-question p-5 cursor-pointer flex items-center justify-between bg-gray-800/50 rounded-t-lg">
+                <h4 class="font-medium">What fees are charged when I sell an NFT?</h4>
+                <i class="fas fa-chevron-down text-gray-400 transition-transform duration-300"></i>
+              </div>
+              <div class="faq-answer bg-gray-800/20 rounded-b-lg px-5 py-0">
+                <div class="py-4 text-gray-300">
+                  <p>When selling NFTs on Tokenated, you'll encounter the following fees:</p>
+                  <ul class="list-disc ml-5 mt-2 space-y-2">
+                    <li><strong>Platform Fee:</strong> 2.5% of the sale price (deducted automatically).</li>
+                    <li><strong>Gas Fees:</strong> Variable cost paid to the network for transaction processing.</li>
+                    <li><strong>Creator Royalties:</strong> If you're reselling an NFT, a percentage (typically 5-10%) goes to the original creator.</li>
+                  </ul>
+                  <p class="mt-3">All fees are transparent and displayed before you complete your listing. We offer reduced platform fees for high-volume sellers and featured collections.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+  
+          <!-- Security FAQs -->
+          <div id="security-faq" class="mb-12">
+            <h3 class="text-xl font-semibold mb-6 flex items-center">
+              <i class="fas fa-shield-alt mr-3 text-purple-400"></i>
+              Security
+            </h3>
+            
+            <!-- FAQ Item -->
+            <div class="faq-item mb-4 overflow-hidden">
+              <div class="faq-question p-5 cursor-pointer flex items-center justify-between bg-gray-800/50 rounded-t-lg">
+                <h4 class="font-medium">How does Tokenated ensure my NFTs are secure?</h4>
+                <i class="fas fa-chevron-down text-gray-400 transition-transform duration-300"></i>
+              </div>
+              <div class="faq-answer bg-gray-800/20 rounded-b-lg px-5 py-0">
+                <div class="py-4 text-gray-300">
+                  <p>Tokenated prioritizes security through multiple measures:</p>
+                  <ul class="list-disc ml-5 mt-2 space-y-2">
+                    <li><strong>Smart Contract Audits:</strong> All platform contracts undergo rigorous third-party security audits.</li>
+                    <li><strong>Decentralized Storage:</strong> NFT metadata and assets are stored on IPFS for permanent decentralized access.</li>
+                    <li><strong>Verified Collections:</strong> Blue checkmarks indicate verified creators and collections to prevent fraud.</li>
+                    <li><strong>Non-Custodial:</strong> We never take custody of your NFTs or private keys.</li>
+                    <li><strong>Regular Security Updates:</strong> Our platform undergoes continuous security improvements.</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            
+            <!-- FAQ Item -->
+            <div class="faq-item mb-4 overflow-hidden">
+              <div class="faq-question p-5 cursor-pointer flex items-center justify-between bg-gray-800/50 rounded-t-lg">
+                <h4 class="font-medium">How can I avoid NFT scams?</h4>
+                <i class="fas fa-chevron-down text-gray-400 transition-transform duration-300"></i>
+              </div>
+              <div class="faq-answer bg-gray-800/20 rounded-b-lg px-5 py-0">
+                <div class="py-4 text-gray-300">
+                  <p>To protect yourself from NFT scams, follow these safety tips:</p>
+                  <ul class="list-disc ml-5 mt-2 space-y-2">
+                    <li>Research creators before purchasing by reviewing their history and social media presence.</li>
+                    <li>Be wary of deals that seem too good to be true or create urgency.</li>
+                    <li>Never share your wallet's seed phrase or private keys with anyone.</li>
+                    <li>Disconnect your wallet from websites when not in use.</li>
+                    <li>Double-check all transaction details before confirming.</li>
+                    <li>Use a hardware wallet for storing valuable NFTs.</li>
+                  </ul>
+                  <p class="mt-3">Remember: Tokenated staff will never ask for your private keys or seed phrase.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+  
+          <!-- Payment FAQs -->
+          <div id="payment-faq">
+            <h3 class="text-xl font-semibold mb-6 flex items-center">
+              <i class="fas fa-credit-card mr-3 text-purple-400"></i>
+              Payments
+            </h3>
+            
+            <!-- FAQ Item -->
+            <div class="faq-item mb-4 overflow-hidden">
+              <div class="faq-question p-5 cursor-pointer flex items-center justify-between bg-gray-800/50 rounded-t-lg">
+                <h4 class="font-medium">Which cryptocurrencies does Tokenated accept?</h4>
+                <i class="fas fa-chevron-down text-gray-400 transition-transform duration-300"></i>
+              </div>
+              <div class="faq-answer bg-gray-800/20 rounded-b-lg px-5 py-0">
+                <div class="py-4 text-gray-300">
+                  <p>Tokenated currently supports the following cryptocurrencies:</p>
+                  <div class="grid grid-cols-2 md:grid-cols-3 gap-3 mt-3">
+                    <div class="flex items-center space-x-2">
+                      <img src="assets/crypto/eth.svg" alt="Ethereum" class="w-6 h-6">
+                      <span>Base </span>
+                    </div>
+                  <p class="mt-3">We're constantly expanding our supported cryptocurrencies. Check back regularly for updates.</p>
+                </div>
+              </div>
+            </div>
+            
+            <!-- FAQ Item -->
+            <div class="faq-item mb-4 overflow-hidden">
+              <div class="faq-question p-5 cursor-pointer flex items-center justify-between bg-gray-800/50 rounded-t-lg">
+                <h4 class="font-medium">When do I receive payment for my sold NFTs?</h4>
+                <i class="fas fa-chevron-down text-gray-400 transition-transform duration-300"></i>
+              </div>
+              <div class="faq-answer bg-gray-800/20 rounded-b-lg px-5 py-0">
+                <div class="py-4 text-gray-300">
+                  <p>When your NFT sells, the payment process is as follows:</p>
+                  <ul class="list-disc ml-5 mt-2 space-y-2">
+                    <li><strong>Fixed Price Sales:</strong> You receive payment immediately after the transaction is confirmed on the blockchain (typically within minutes).</li>
+                    <li><strong>Auction Sales:</strong> Payment is released when the auction ends and the highest bidder's payment clears.</li>
+                  </ul>
+                  <p class="mt-3">All payments go directly to your connected wallet address. Our platform automatically deducts the applicable fees before sending the payment to your wallet.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+  
+      <!-- Contact Support Section -->
+      <section class="py-16 px-4">
+        <div class="max-w-5xl mx-auto">
+          <h2 class="text-2xl md:text-3xl font-bold mb-6 text-center">Still Need Help?</h2>
+          <p class="text-gray-300 text-center mb-12 max-w-2xl mx-auto">
+            If you couldn't find the answer you were looking for, our support team is ready to assist you.
+          </p>
+  
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <!-- Contact Form -->
+            <div class="bg-gray-800/30 p-8 rounded-2xl border border-gray-700">
+              <h3 class="text-xl font-semibold mb-6">Send Us a Message</h3>
+              <form>
+                <div class="mb-4">
+                  <label for="name" class="block text-gray-300 mb-2">Name</label>
+                  <input
+                    type="text"
+                    id="name"
+                    class="w-full bg-gray-900 border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-purple-500"
+                    placeholder="Your name"
+                    required
+                  />
+                </div>
+                <div class="mb-4">
+                  <label for="email" class="block text-gray-300 mb-2">Email</label>
+                  <input
+                    type="email"
+                    id="email"
+                    class="w-full bg-gray-900 border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-purple-500"
+                    placeholder="Your email address"
+                    required
+                  />
+                </div>
+                <div class="mb-4">
+                  <label for="topic" class="block text-gray-300 mb-2">Topic</label>
+                  <select
+                    id="topic"
+                    class="w-full bg-gray-900 border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-purple-500"
+                    required
+                  >
+                    <option value="" disabled selected>Select a topic</option>
+                    <option value="wallet">Wallet Issue</option>
+                    <option value="buying">Buying NFTs</option>
+                    <option value="selling">Selling NFTs</option>
+                    <option value="creating">Creating NFTs</option>
+                    <option value="security">Security</option>
+                    <option value="payment">Payments</option>
+                    <option value="other">Other</option>
+                  </select>
+                </div>
+                <div class="mb-6">
+                  <label for="message" class="block text-gray-300 mb-2">Message</label>
+                  <textarea
+                    id="message"
+                    rows="5"
+                    class="w-full bg-gray-900 border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-purple-500"
+                    placeholder="Describe your issue in detail"
+                    required
+                  ></textarea>
+                </div>
+                <button
+                  type="submit"
+                  class="w-full bg-gradient-to-r from-purple-600 to-pink-600 text-white font-medium py-3 px-4 rounded-lg hover:opacity-90 transition-opacity"
+                >
+                  Submit Request
+                </button>
+              </form>
+            </div>
+  
+            <!-- Alternative Support Options -->
+            <div class="container mx-auto p-6">
+                <div class="space-y-6">
+                  <!-- Option 1: Live Chat -->
+                  <div class="support-card bg-gray-800/30 p-6 rounded-2xl border border-gray-700 hover:border-purple-500/50 transition-colors">
+                    <div class="flex items-center space-x-4">
+                      <div class="support-icon">
+                        <i class="fas fa-comments text-white"></i>
+                      </div>
+                      <div>
+                        <h4 class="font-semibold text-lg">Live Chat</h4>
+                        <p class="text-gray-300">Chat with our support team in real-time</p>
+                      </div>
+                    </div>
+                    <div class="mt-4">
+                      <button id="liveChatBtn" class="w-full bg-gray-700 hover:bg-gray-600 text-white font-medium py-3 rounded-lg transition-colors flex items-center justify-center space-x-2">
+                        <span>Start Chat</span>
+                        <i class="fas fa-arrow-right"></i>
+                      </button>
+                    </div>
+                  </div>
+              
+                  <!-- Option 2: Knowledge Base -->
+                  <div class="support-card bg-gray-800/30 p-6 rounded-2xl border border-gray-700 hover:border-purple-500/50 transition-colors">
+                    <div class="flex items-center space-x-4">
+                      <div class="support-icon">
+                        <i class="fas fa-book text-white"></i>
+                      </div>
+                      <div>
+                        <h4 class="font-semibold text-lg">Knowledge Base</h4>
+                        <p class="text-gray-300">Explore in-depth guides and tutorials</p>
+                      </div>
+                    </div>
+                    <div class="mt-4">
+                      <button id="kbBtn" class="w-full bg-gray-700 hover:bg-gray-600 text-white font-medium py-3 rounded-lg transition-colors flex items-center justify-center space-x-2">
+                        <span>Browse Articles</span>
+                        <i class="fas fa-arrow-right"></i>
+                      </button>
+                    </div>
+                  </div>
+              
+                  <!-- Option 3: Community Forum -->
+                  <div class="support-card bg-gray-800/30 p-6 rounded-2xl border border-gray-700 hover:border-purple-500/50 transition-colors">
+                    <div class="flex items-center space-x-4">
+                      <div class="support-icon">
+                        <i class="fas fa-users text-white"></i>
+                      </div>
+                      <div>
+                        <h4 class="font-semibold text-lg">Community Forum</h4>
+                        <p class="text-gray-300">Get help from other users and experts</p>
+                      </div>
+                    </div>
+                    <div class="mt-4">
+                      <button id="forumBtn" class="w-full bg-gray-700 hover:bg-gray-600 text-white font-medium py-3 rounded-lg transition-colors flex items-center justify-center space-x-2">
+                        <span>Join Discussion</span>
+                        <i class="fas fa-arrow-right"></i>
+                      </button>
+                    </div>
+                  </div>
+              
+                  <!-- Option 4: Email Support -->
+                  <div class="support-card bg-gray-800/30 p-6 rounded-2xl border border-gray-700 hover:border-purple-500/50 transition-colors">
+                    <div class="flex items-center space-x-4">
+                      <div class="support-icon">
+                        <i class="fas fa-envelope text-white"></i>
+                      </div>
+                      <div>
+                        <h4 class="font-semibold text-lg">Email Support</h4>
+                        <p class="text-gray-300">Send us an email directly</p>
+                      </div>
+                    </div>
+                    <div class="mt-4">
+                      <button id="emailBtn" class="w-full bg-gray-700 hover:bg-gray-600 text-white font-medium py-3 rounded-lg transition-colors flex items-center justify-center space-x-2">
+                        <span>Contact Us</span>
+                        <i class="fas fa-arrow-right"></i>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            
+              <!-- Live Chat Modal -->
+              <div id="liveChatModal" class="modal">
+                <div class="modal-content">
+                  <span class="close" id="closeLiveChat">&times;</span>
+                  <h2 style="margin-top: 0; color: white; background: linear-gradient(to right, #9c3aed, #ec4899); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;">Live Chat Support</h2>
+                  
+                  <div class="chat-container">
+                    <div class="chat-message agent">
+                      <div class="message-sender">Support Agent</div>
+                      <div class="message-content">Hello! How can I help you today with Tokenated?</div>
+                      <div class="message-time">11:02 AM</div>
+                    </div>
+                    
+                    <div class="chat-message user">
+                      <div class="message-sender">You</div>
+                      <div class="message-content">Hi, I'm having trouble connecting my wallet.</div>
+                      <div class="message-time">11:03 AM</div>
+                    </div>
+                    
+                    <div class="chat-message agent">
+                      <div class="message-sender">Support Agent</div>
+                      <div class="message-content">I understand that can be frustrating. Which wallet are you trying to connect?</div>
+                      <div class="message-time">11:03 AM</div>
+                    </div>
+                    
+                    <div class="agent-typing" style="margin-top: 0.5rem;">
+                      <small style="opacity: 0.7;">Agent is typing</small>
+                      <div class="typing-indicator">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div style="display: flex; gap: 0.5rem;">
+                    <input type="text" placeholder="Type your message here..." style="flex-grow: 1; padding: 0.75rem; border-radius: 0.5rem; background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2); color: white;">
+                    <button style="background: linear-gradient(to right, #9c3aed, #ec4899); border: none; border-radius: 0.5rem; padding: 0.75rem 1rem; color: white; cursor: pointer;">
+                      <i class="fas fa-paper-plane"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            
+              <!-- Knowledge Base Modal -->
+              <div id="kbModal" class="modal">
+                <div class="modal-content">
+                  <span class="close" id="closeKB">&times;</span>
+                  <h2 style="margin-top: 0; color: white; background: linear-gradient(to right, #9c3aed, #ec4899); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;">Knowledge Base</h2>
+                  
+                  <div style="margin-bottom: 1.5rem;">
+                    <input type="text" placeholder="Search articles..." style="width: 100%; padding: 0.75rem; border-radius: 0.5rem; background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2); color: white;">
+                  </div>
+                  
+                  <h3>Popular Articles</h3>
+                  
+                  <div class="article-preview">
+                    <h4>How to Connect Your Wallet</h4>
+                    <div class="article-meta">Updated 3 days ago • 5 min read</div>
+                    <div class="article-snippet">Learn how to connect your MetaMask, Trust Wallet, or other web3 wallets to the Tokenated platform in a few simple steps...</div>
+                  </div>
+                  
+                  <div class="article-preview">
+                    <h4>Understanding Gas Fees</h4>
+                    <div class="article-meta">Updated 1 week ago • 8 min read</div>
+                    <div class="article-snippet">This guide explains what gas fees are, why they fluctuate, and how to optimize your transactions to pay less...</div>
+                  </div>
+                  
+                  <div class="article-preview">
+                    <h4>Security Best Practices</h4>
+                    <div class="article-meta">Updated 2 weeks ago • 10 min read</div>
+                    <div class="article-snippet">Protect your assets with these essential security tips for managing your cryptocurrency and NFT holdings...</div>
+                  </div>
+                  
+                  <div style="text-align: center; margin-top: 1.5rem;">
+                    <button style="background: linear-gradient(to right, #9c3aed, #ec4899); border: none; border-radius: 0.5rem; padding: 0.75rem 1.5rem; color: white; cursor: pointer;">
+                      View All Articles
+                    </button>
+                  </div>
+                </div>
+              </div>
+            
+              <!-- Community Forum Modal -->
+              <div id="forumModal" class="modal">
+                <div class="modal-content">
+                  <span class="close" id="closeForum">&times;</span>
+                  <h2 style="margin-top: 0; color: white; background: linear-gradient(to right, #9c3aed, #ec4899); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;">Community Forum</h2>
+                  
+                  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                    <div>
+                      <select style="padding: 0.5rem; border-radius: 0.5rem; background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2); color: white;">
+                        <option>Latest Threads</option>
+                        <option>Popular Threads</option>
+                        <option>Unanswered Questions</option>
+                      </select>
+                    </div>
+                    <button style="background: linear-gradient(to right, #9c3aed, #ec4899); border: none; border-radius: 0.5rem; padding: 0.5rem 1rem; color: white; cursor: pointer;">
+                      <i class="fas fa-plus"></i> New Thread
+                    </button>
+                  </div>
+                  
+                  <div class="forum-thread">
+                    <div class="thread-stats">
+                      <div style="font-weight: bold;">7</div>
+                      <div style="font-size: 0.7rem;">replies</div>
+                    </div>
+                    <div>
+                      <div class="thread-title">Best way to stake tokens on Layer 2?</div>
+                      <div class="thread-meta">Started by CryptoFan • 2 hours ago</div>
+                    </div>
+                  </div>
+                  
+                  <div class="forum-thread">
+                    <div class="thread-stats">
+                      <div style="font-weight: bold;">12</div>
+                      <div style="font-size: 0.7rem;">replies</div>
+                    </div>
+                    <div>
+                      <div class="thread-title">Troubleshooting MetaMask connection issues</div>
+                      <div class="thread-meta">Started by Wallet_Expert • 1 day ago</div>
+                    </div>
+                  </div>
+                  
+                  <div class="forum-thread">
+                    <div class="thread-stats">
+                      <div style="font-weight: bold;">4</div>
+                      <div style="font-size: 0.7rem;">replies</div>
+                    </div>
+                    <div>
+                      <div class="thread-title">How to reduce gas fees when minting NFTs?</div>
+                      <div class="thread-meta">Started by NFT_Creator • 3 days ago</div>
+                    </div>
+                  </div>
+                  
+                  <div style="text-align: center; margin-top: 1.5rem;">
+                    <button style="background: linear-gradient(to right, #9c3aed, #ec4899); border: none; border-radius: 0.5rem; padding: 0.75rem 1.5rem; color: white; cursor: pointer;">
+                      Browse All Threads
+                    </button>
+                  </div>
+                </div>
+              </div>
+            
+              <!-- Email Support Modal -->
+              <div id="emailModal" class="modal">
+                <div class="modal-content">
+                  <span class="close" id="closeEmail">&times;</span>
+                  <h2 style="margin-top: 0; color: white; background: linear-gradient(to right, #9c3aed, #ec4899); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;">Email Support</h2>
+                  
+                  <form style="margin-top: 1.5rem;">
+                    <div style="margin-bottom: 1rem;">
+                      <label style="display: block; margin-bottom: 0.5rem;">Your Name</label>
+                      <input type="text" placeholder="Enter your name" style="width: 100%; padding: 0.75rem; border-radius: 0.5rem; background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2); color: white;">
+                    </div>
+                    
+                    <div style="margin-bottom: 1rem;">
+                      <label style="display: block; margin-bottom: 0.5rem;">Email Address</label>
+                      <input type="email" placeholder="Enter your email" style="width: 100%; padding: 0.75rem; border-radius: 0.5rem; background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2); color: white;">
+                    </div>
+                    
+                    <div style="margin-bottom: 1rem;">
+                      <label style="display: block; margin-bottom: 0.5rem;">Subject</label>
+                      <select style="width: 100%; padding: 0.75rem; border-radius: 0.5rem; background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2); color: white;">
+                        <option>Select a topic</option>
+                        <option>Account Issues</option>
+                        <option>Wallet Connection</option>
+                        <option>Transaction Problems</option>
+                        <option>Security Concerns</option>
+                        <option>Other</option>
+                      </select>
+                    </div>
+                    
+                    <div style="margin-bottom: 1.5rem;">
+                      <label style="display: block; margin-bottom: 0.5rem;">Message</label>
+                      <textarea placeholder="Describe your issue in detail..." rows="5" style="width: 100%; padding: 0.75rem; border-radius: 0.5rem; background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2); color: white; resize: vertical;"></textarea>
+                    </div>
+                    
+                    <div style="display: flex; gap: 0.5rem; align-items: center; margin-bottom: 1.5rem;">
+                      <input type="checkbox" id="attach-files">
+                      <label for="attach-files">Attach screenshots or files (optional)</label>
+                    </div>
+                    
+                    <button type="submit" style="width: 100%; background: linear-gradient(to right, #9c3aed, #ec4899); border: none; border-radius: 0.5rem; padding: 0.75rem; color: white; cursor: pointer; font-weight: 600;">
+                      Send Message
+                    </button>
+                    
+                    <div style="text-align: center; margin-top: 1rem; font-size: 0.9rem; opacity: 0.7;">
+                      Our team typically responds within 24 hours
+                    </div>
+                  </form>
+                </div>
+              </div>
+      </section>
+  
+      <section class="footer"></section>  
+      <!-- JavaScript -->
+      <script src="./assets/js/script.js"></script>
+      <script>
+        // Toggle FAQ answers
+        document.querySelectorAll('.faq-question').forEach(question => {
+          question.addEventListener('click', () => {
+            const faqItem = question.parentElement;
+            const icon = question.querySelector('i');
+            
+            faqItem.classList.toggle('active');
+            icon.style.transform = faqItem.classList.contains('active') ? 'rotate(180deg)' : '';
+          });
+        });
+  
+       const searchInput = document.getElementById('searchInput');
+    const categoriesContainer = document.getElementById('categoriesContainer');
+    const supportCards = document.querySelectorAll('.support-card');
+
+    searchInput.addEventListener('keyup', function() {
+      const searchTerm = this.value.toLowerCase();
+      
+      supportCards.forEach(card => {
+        const category = card.getAttribute('data-category')?.toLowerCase() || '';
+        const title = card.querySelector('h3').textContent.toLowerCase();
+        const description = card.querySelector('p').textContent.toLowerCase();
+        const searchString = category + ' ' + title + ' ' + description;
+        
+        if (searchTerm === '' || searchString.includes(searchTerm)) {
+          card.style.display = 'block';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    });
+
+    // Modal functionality
+    const modalButtons = document.querySelectorAll('.modal-open');
+    const closeButtons = document.querySelectorAll('.close');
+    const modals = document.querySelectorAll('.modal');
+
+    // Open modal
+    modalButtons.forEach(button => {
+      button.addEventListener('click', function(e) {
+        e.preventDefault();
+        const modalId = this.getAttribute('data-modal');
+        const modal = document.getElementById(modalId);
+        modal.style.display = 'block';
+        document.body.style.overflow = 'hidden'; // Prevent scrolling when modal is open
+      });
+    });
+
+    // Close modal with X button
+    closeButtons.forEach(button => {
+      button.addEventListener('click', function() {
+        const modal = this.closest('.modal');
+        modal.style.display = 'none';
+        document.body.style.overflow = 'auto'; // Re-enable scrolling
+      });
+    });
+
+    // Close modal when clicking outside
+    window.addEventListener('click', function(e) {
+      modals.forEach(modal => {
+        if (e.target === modal) {
+          modal.style.display = 'none';
+          document.body.style.overflow = 'auto'; // Re-enable scrolling
+        }
+      });
+    });
+
+    // Close modal with ESC key
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') {
+        modals.forEach(modal => {
+          modal.style.display = 'none';
+        });
+        document.body.style.overflow = 'auto'; // Re-enable scrolling
+      }
+    });
+      </script>
+    </body>
+  </html>

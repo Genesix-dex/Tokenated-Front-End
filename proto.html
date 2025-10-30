@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NFT Collection with Prominent Imprint Icons</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+  <style>
+    body {
+      background-color: #111827;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    }
+    
+    .nft-card {
+      transition: all 0.3s ease;
+      background: rgba(31, 41, 55, 0.7);
+      border: 1px solid rgba(75, 85, 99, 0.5);
+    }
+    
+    .nft-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 10px 25px -5px rgba(139, 92, 246, 0.3);
+    }
+    
+    .nft-card .image-container {
+      overflow: hidden;
+    }
+    
+    .nft-card img {
+      transition: transform 0.5s ease;
+    }
+    
+    .nft-card:hover img {
+      transform: scale(1.05);
+    }
+    
+    .imprint-button {
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .imprint-button::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+      transition: left 0.5s ease;
+    }
+    
+    .imprint-button:hover::before {
+      left: 100%;
+    }
+    
+    .price-tag {
+      backdrop-filter: blur(4px);
+    }
+    
+    .animate-pulse-slow {
+      animation: pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    }
+    
+    @keyframes pulse {
+      0%, 100% {
+        opacity: 1;
+      }
+      50% {
+        opacity: 0.7;
+      }
+    }
+    
+    @keyframes coinFlash {
+      0% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.2); opacity: 0.8; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+    
+    .imprint-animation {
+      animation: coinFlash 0.5s ease;
+    }
+    
+    /* NEW STYLES FOR PROMINENT ICONS */
+    .icon-container {
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(5px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+      margin-right: 12px;
+      transition: all 0.3s ease;
+    }
+    
+    .imprint-button:hover .icon-container {
+      transform: scale(1.1);
+      background: rgba(255, 255, 255, 0.15);
+    }
+    
+    .nft-icon {
+      width: 24px;
+      height: 24px;
+      filter: drop-shadow(0 0 6px rgba(255, 255, 255, 0.6));
+    }
+    
+    .floating-icon {
+      position: absolute;
+      top: -15px;
+      right: 15px;
+      width: 50px;
+      height: 50px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      background: linear-gradient(135deg, rgba(139, 92, 246, 0.8), rgba(236, 72, 153, 0.8));
+      box-shadow: 0 0 20px rgba(139, 92, 246, 0.5);
+      z-index: 10;
+      animation: float 3s ease-in-out infinite;
+    }
+    
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-8px); }
+    }
+    
+    .glow {
+      filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.8));
+      animation: glow 2s ease-in-out infinite;
+    }
+    
+    @keyframes glow {
+      0%, 100% { filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.6)); }
+      50% { filter: drop-shadow(0 0 15px rgba(139, 92, 246, 0.8)); }
+    }
+  </style>
+</head>
+<body class="text-white p-4 md:p-8">
+  <div class="max-w-6xl mx-auto">
+    <h1 class="text-3xl font-bold mb-8 bg-gradient-to-r from-purple-400 to-pink-500 text-transparent bg-clip-text">Featured NFTs</h1>
+    
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <!-- NFT Card 1 - Diamond/Blockchain Icon -->
+      <div class="nft-card rounded-2xl overflow-hidden shadow-lg relative">
+        <!-- Floating Icon -->
+        <div class="floating-icon">
+          <svg class="w-8 h-8 text-white glow" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 2L6 7L12 12L18 7L12 2Z" fill="white" />
+            <path d="M6 17L12 22L18 17L12 12L6 17Z" fill="white" />
+            <path d="M12 12L6 7V17" stroke="white" stroke-width="2" />
+            <path d="M12 12L18 7V17" stroke="white" stroke-width="2" />
+          </svg>
+        </div>
+        
+        <div class="image-container relative">
+          <img src="/api/placeholder/600/400" alt="NFT Artwork" class="w-full h-52 object-cover">
+          <div class="absolute top-4 left-4 flex space-x-2">
+            <span class="price-tag bg-black bg-opacity-50 text-white px-3 py-1 rounded-full text-sm font-medium">2.45 ETH</span>
+            <span class="price-tag bg-purple-500 bg-opacity-20 text-purple-300 px-3 py-1 rounded-full text-sm font-medium">Digital Art</span>
+          </div>
+        </div>
+        
+        <div class="p-5">
+          <h3 class="text-xl font-bold mb-2">Cosmic Dreamscape #422</h3>
+          <p class="text-gray-400 mb-4 text-sm">A journey through ethereal realms of consciousness, captured in vibrant digital form.</p>
+          
+          <div class="flex items-center justify-between mb-4">
+            <div class="flex items-center space-x-2">
+              <div class="w-8 h-8 rounded-full overflow-hidden border-2 border-purple-500">
+                <img src="/api/placeholder/100/100" alt="Creator" class="w-full h-full object-cover">
+              </div>
+              <div>
+                <p class="text-sm font-medium">@stellarArtist</p>
+                <p class="text-xs text-gray-500">Creator</p>
+              </div>
+            </div>
+          </div>
+          
+          <button class="imprint-button w-full py-4 px-4 bg-gradient-to-r from-purple-600 to-pink-600 rounded-xl font-medium hover:from-purple-700 hover:to-pink-700 flex items-center justify-center space-x-2 shadow-lg">
+            <!-- Diamond/Blockchain Icon in Container -->
+            <div class="icon-container">
+              <svg class="nft-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 2L6 7L12 12L18 7L12 2Z" fill="currentColor" />
+                <path d="M6 17L12 22L18 17L12 12L6 17Z" fill="currentColor" />
+                <path d="M12 12L6 7V17" stroke="currentColor" stroke-width="2" />
+                <path d="M12 12L18 7V17" stroke="currentColor" stroke-width="2" />
+              </svg>
+            </div>
+            <span class="text-lg">Leave an Imprint</span>
+            <span class="bg-white bg-opacity-20 text-xs rounded-full px-2 py-1 imprint-count">142</span>
+          </button>
+        </div>
+      </div>
+      
+      <!-- NFT Card 2 - Cryptocurrency Coin Icon -->
+      <div class="nft-card rounded-2xl overflow-hidden shadow-lg relative">
+        <!-- Floating Icon -->
+        <div class="floating-icon">
+          <svg class="w-8 h-8 text-white glow" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="12" cy="12" r="10" stroke="white" stroke-width="2" />
+            <path d="M12 7V17M8 12H16" stroke="white" stroke-width="2" />
+          </svg>
+        </div>
+        
+        <div class="image-container relative">
+          <img src="/api/placeholder/600/400" alt="NFT Artwork" class="w-full h-52 object-cover">
+          <div class="absolute top-4 left-4 flex space-x-2">
+            <span class="price-tag bg-black bg-opacity-50 text-white px-3 py-1 rounded-full text-sm font-medium">1.87 ETH</span>
+            <span class="price-tag bg-pink-500 bg-opacity-20 text-pink-300 px-3 py-1 rounded-full text-sm font-medium">3D Art</span>
+          </div>
+        </div>
+        
+        <div class="p-5">
+          <h3 class="text-xl font-bold mb-2">Neon Genesis #89</h3>
+          <p class="text-gray-400 mb-4 text-sm">A futuristic cityscape where digital entities come to life, pulsing with energy.</p>
+          
+          <div class="flex items-center justify-between mb-4">
+            <div class="flex items-center space-x-2">
+              <div class="w-8 h-8 rounded-full overflow-hidden border-2 border-pink-500">
+                <img src="/api/placeholder/100/100" alt="Creator" class="w-full h-full object-cover">
+              </div>
+              <div>
+                <p class="text-sm font-medium">@cyberNomad</p>
+                <p class="text-xs text-gray-500">Creator</p>
+              </div>
+            </div>
+          </div>
+          
+          <button class="imprint-button w-full py-4 px-4 bg-gradient-to-r from-pink-600 to-purple-600 rounded-xl font-medium hover:from-pink-700 hover:to-purple-700 flex items-center justify-center space-x-2 shadow-lg">
+            <!-- Cryptocurrency Coin Icon in Container -->
+            <div class="icon-container">
+              <svg class="nft-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2" />
+                <path d="M12 7V17M8 12H16" stroke="currentColor" stroke-width="2" />
+              </svg>
+            </div>
+            <span class="text-lg">Leave an Imprint</span>
+            <span class="bg-white bg-opacity-20 text-xs rounded-full px-2 py-1 imprint-count">89</span>
+          </button>
+        </div>
+      </div>
+      
+      <!-- NFT Card 3 - Blockchain Chain Link Icon -->
+      <div class="nft-card rounded-2xl overflow-hidden shadow-lg relative">
+        <!-- Floating Icon -->
+        <div class="floating-icon">
+          <svg class="w-8 h-8 text-white glow" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M10 13.5L14 9.5" stroke="white" stroke-width="2" stroke-linecap="round"/>
+            <path d="M7.5 16L4.5 19C3.4 20.1 1.6 20.1 0.5 19C-0.6 17.9 -0.6 16.1 0.5 15L3.5 12" stroke="white" stroke-width="2" stroke-linecap="round"/>
+            <path d="M16.5 8L19.5 5C20.6 3.9 22.4 3.9 23.5 5C24.6 6.1 24.6 7.9 23.5 9L20.5 12" stroke="white" stroke-width="2" stroke-linecap="round"/>
+            <path d="M14.5 11L11.5 14C10.4 15.1 8.6 15.1 7.5 14C6.4 12.9 6.4 11.1 7.5 10L10.5 7" stroke="white" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </div>
+        
+        <div class="image-container relative">
+          <img src="/api/placeholder/600/400" alt="NFT Artwork" class="w-full h-52 object-cover">
+          <div class="absolute top-4 left-4 flex space-x-2">
+            <span class="price-tag bg-black bg-opacity-50 text-white px-3 py-1 rounded-full text-sm font-medium">3.21 ETH</span>
+            <span class="price-tag bg-blue-500 bg-opacity-20 text-blue-300 px-3 py-1 rounded-full text-sm font-medium">Collectible</span>
+          </div>
+        </div>
+        
+        <div class="p-5">
+          <h3 class="text-xl font-bold mb-2">Ethereal Blocks #17</h3>
+          <p class="text-gray-400 mb-4 text-sm">An abstract representation of blockchain technology through geometric forms.</p>
+          
+          <div class="flex items-center justify-between mb-4">
+            <div class="flex items-center space-x-2">
+              <div class="w-8 h-8 rounded-full overflow-hidden border-2 border-blue-500">
+                <img src="/api/placeholder/100/100" alt="Creator" class="w-full h-full object-cover">
+              </div>
+              <div>
+                <p class="text-sm font-medium">@blockMaster</p>
+                <p class="text-xs text-gray-500">Creator</p>
+              </div>
+            </div>
+          </div>
+          
+          <button class="imprint-button w-full py-4 px-4 bg-gradient-to-r from-blue-600 to-purple-600 rounded-xl font-medium hover:from-blue-700 hover:to-purple-700 flex items-center justify-center space-x-2 shadow-lg">
+            <!-- Blockchain Chain Link Icon in Container -->
+            <div class="icon-container">
+              <svg class="nft-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M10 13.5L14 9.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                <path d="M7.5 16L4.5 19C3.4 20.1 1.6 20.1 0.5 19C-0.6 17.9 -0.6 16.1 0.5 15L3.5 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                <path d="M16.5 8L19.5 5C20.6 3.9 22.4 3.9 23.5 5C24.6 6.1 24.6 7.9 23.5 9L20.5 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                <path d="M14.5 11L11.5 14C10.4 15.1 8.6 15.1 7.5 14C6.4 12.9 6.4 11.1 7.5 10L10.5 7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+            </div>
+            <span class="text-lg">Leave an Imprint</span>
+            <span class="bg-white bg-opacity-20 text-xs rounded-full px-2 py-1 imprint-count">64</span>
+          </button>
+        </div>
+      </div>
+      
+      <!-- NFT Card 4 - Digital Wallet Icon -->
+      <div class="nft-card rounded-2xl overflow-hidden shadow-lg relative">
+        <!-- Floating Icon -->
+        <div class="floating-icon">
+          <svg class="w-8 h-8 text-white glow" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="2" y="5" width="20" height="14" rx="2" stroke="white" stroke-width="2"/>
+            <path d="M17 9H21V15H17C15.8954 15 15 14.1046 15 13V11C15 9.89543 15.8954 9 17 9Z" fill="white"/>
+            <circle cx="17" cy="12" r="1" fill="black"/>
+          </svg>
+        </div>
+        
+        <div class="image-container relative">
+          <img src="/api/placeholder/600/400" alt="NFT Artwork" class="w-full h-52 object-cover">
+          <div class="absolute top-4 left-4 flex space-x-2">
+            <span class="price-tag bg-black bg-opacity-50 text-white px-3 py-1 rounded-full text-sm font-medium">5.62 ETH</span>
+            <span class="price-tag bg-green-500 bg-opacity-20 text-green-300 px-3 py-1 rounded-full text-sm font-medium">Photography</span>
+          </div>
+        </div>
+        
+        <div class="p-5">
+          <h3 class="text-xl font-bold mb-2">Digital Memories #78</h3>
+          <p class="text-gray-400 mb-4 text-sm">Moments frozen in time, preserved as digital assets on the blockchain forever.</p>
+          
+          <div class="flex items-center justify-between mb-4">
+            <div class="flex items-center space-x-2">
+              <div class="w-8 h-8 rounded-full overflow-hidden border-2 border-green-500">
+                <img src="/api/placeholder/100/100" alt="Creator" class="w-full h-full object-cover">
+              </div>
+              <div>
+                <p class="text-sm font-medium">@cryptoLens</p>
+                <p class="text-xs text-gray-500">Creator</p>
+              </div>
+            </div>
+          </div>
+          
+          <button class="imprint-button w-full py-4 px-4 bg-gradient-to-r from-green-600 to-purple-600 rounded-xl font-medium hover:from-green-700 hover:to-purple-700 flex items-center justify-center space-x-2 shadow-lg">
+            <!-- Digital Wallet Icon in Container -->
+            <div class="icon-container">
+              <svg class="nft-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect x="2" y="5" width="20" height="14" rx="2" stroke="currentColor" stroke-width="2"/>
+                <path d="M17 9H21V15H17C15.8954 15 15 14.1046 15 13V11C15 9.89543 15.8954 9 17 9Z" fill="currentColor"/>
+                <circle cx="17" cy="12" r="1" fill="white"/>
+              </svg>
+            </div>
+            <span class="text-lg">Leave an Imprint</span>
+            <span class="bg-white bg-opacity-20 text-xs rounded-full px-2 py-1 imprint-count">127</span>
+          </button>
+        </div>
+      </div>
+      
+      <!-- NFT Card 5 - Key/Cryptography Icon -->
+      <div class="nft-card rounded-2xl overflow-hidden shadow-lg relative">
+        <!-- Floating Icon -->
+        <div class="floating-icon">
+          <svg class="w-8 h-8 text-white glow" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M15 7C16.6569 7 18 8.34315 18 10C18 11.6569 16.6569 13 15 13C13.3431 13 12 11.6569 12 10C12 8.34315 13.3431 7 15 7Z" stroke="white" stroke-width="2"/>
+            <path d="M12 13L3 22M7 17H3V21" stroke="white" stroke-width="2" stroke-linecap="round"/>
+            <path d="M19 10H21M15 14V16" stroke="white" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </div>
+        
+        <div class="image-container relative">
+          <img src="/api/placeholder/600/400" alt="NFT Artwork" class="w-full h-52 object-cover">
+          <div class="absolute top-4 left-4 flex space-x-2">
+            <span class="price-tag bg-black bg-opacity-50 text-white px-3 py-1 rounded-full text-sm font-medium">4.18 ETH</span>
+            <span class="price-tag bg-yellow-500 bg-opacity-20 text-yellow-300 px-3 py-1 rounded-full text-sm font-medium">Gaming</span>
+          </div>
+        </div>
+        
+        <div class="p-5">
+          <h3 class="text-xl font-bold mb-2">Quantum Key #33</h3>
+          <p class="text-gray-400 mb-4 text-sm">A rare collectible key that unlocks exclusive content in the metaverse.</p>
+          
+          <div class="flex items-center justify-between mb-4">
+            <div class="flex items-center space-x-2">
+              <div class="w-8 h-8 rounded-full overflow-hidden border-2 border-yellow-500">
+                <img src="/api/placeholder/100/100" alt="Creator" class="w-full h-full object-cover">
+              </div>
+              <div>
+                <p class="text-sm font-medium">@metaCreator</p>
+                <p class="text-xs text-gray-500">Creator</p>
+              </div>
+            </div>
+          </div>
+          
+          <button class="imprint-button w-full py-4 px-4 bg-gradient-to-r from-yellow-600 to-purple-600 rounded-xl font-medium hover:from-yellow-700 hover:to-purple-700 flex items-center justify-center space-x-2 shadow-lg">
+            <!-- Key/Cryptography Icon in Container -->
+            <div class="icon-container">
+              <svg class="nft-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M15 7C16.6569 7 18 8.34315 18 10C18 11.6569 16.6569 13 15 13C13.3431 13 12 11.6569 12 10C12 8.34315 13.3431 7 15 7Z" stroke="currentColor" stroke-width="2"/>
+                <path d="M12 13L3 22M7 17H3V21" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                <path d="M19 10H21M15 14V16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+            </div>
+            <span class="text-lg">Leave an Imprint</span>
+            <span class="bg-white bg-opacity-20 text-xs rounded-full px-2 py-1 imprint-count">95</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Interaction for the imprint buttons
+    document.querySelectorAll('.imprint-button').forEach(button => {
+      button.addEventListener('click', function() {
+        const countElement = this.querySelector('.imprint-count');
+        let count = parseInt(countElement.textContent);
+        countElement.textContent = count + 1;
+        
+        // Add animation
+        countElement.classList.add('imprint-animation');
+        setTimeout(() => {
+          countElement.classList.remove('imprint-animation');
+        }, 500);
+        
+        // Create particle effect
+        const buttonRect = this.getBoundingClientRect();
+        const centerX = buttonRect.left + buttonRect.width / 2;
+        const centerY = buttonRect.top + buttonRect.height / 2;
+        
+        // Get gradient colors from the button
+        const computedStyle = window.getComputedStyle(this);
+        const bgImage = computedStyle.backgroundImage;
+        
+        for (let i = 0; i < 5; i++) {
+          const particle = document.createElement('div');
+          particle.style.position = 'fixed';
+          particle.style.width = '8px';
+          particle.style.height = '8px';
+          particle.style.borderRadius = '50%';
+          particle.style.background = 'rgba(139, 92, 246, 0.7)';
+          particle.style.left = `${centerX}px`;
+          particle.style.top = `${centerY}px`;
+          particle.style.pointerEvents = 'none';
+          particle.style.zIndex = '1000';
+          particle.style.transition = 'all 0.7s ease-out';
+          
+          document.body.appendChild(particle);
+          
+          setTimeout(() => {
+            const angle = Math.random() * Math.PI * 2;
+            const distance = Math.random() * 60 + 20;
+            particle.style.transform = `translate(${Math.cos(angle) * distance}px, ${Math.sin(angle) * distance}px)`;
+            particle.style.opacity = '0';
+          }, 10);
+          
+          setTimeout(() => {
+            document.body.removeChild(particle);
+          }, 700);
+        }
+      });
+    });
+  </script>
+</body>
+</html>

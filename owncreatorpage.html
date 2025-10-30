@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tokenated - NFT Marketplace</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+    <link
+      rel="shortcut icon"
+      href="assets/svg icons/darkLogo.svg"
+      type="image/x-icon"
+    />
+    <style>
+      @keyframes shimmer {
+        0% {
+          opacity: 1;
+        }
+        50% {
+          opacity: 0.5;
+        }
+        100% {
+          opacity: 1;
+        }
+      }
+      .animate-shimmer {
+        animation: shimmer 1.5s infinite;
+      }
+      html,
+      body {
+        scroll-behavior: smooth;
+      }
+      #slider {
+        scroll-snap-type: x mandatory;
+      }
+      .car-item {
+        scroll-snap-align: start;
+      }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  </head>
+  <body class="bg-gray-900 text-white">
+    <!-- Navigation -->
+    <nav
+    class="fixed w-full z-50 backdrop-blur-lg top-0 bg-gray-900/70 border-b border-gray-800/50"
+  >
+    <!-- <div class="max-w-7xl mx-auto px-2 sm:px-6 lg:px-0"> -->
+    <div class="w-[95%] mx-auto px-4 sm:px-6 lg:px-0">
+      <div class="flex items-center justify-between h-20">
+        <!-- Logo Section -->
+        <div class="flex items-center space-x-8">
+          <div class="flex-shrink-0">
+            <a href="index.html" class="flex items-center space-x-2 group">
+              <div
+                class="w-10 h-10 bg-gradient-to-tr from-purple-600 to-pink-600 rounded-lg flex items-center justify-center transform group-hover:rotate-12 transition-transform duration-300"
+              >
+                <img src="assets/svg icons/darkLogo.svg" alt="Logo" />
+              </div>
+              <span
+                class="text-2xl font-bold bg-gradient-to-r from-purple-400 to-pink-500 text-transparent bg-clip-text"
+                >Tokenated</span
+              >
+            </a>
+          </div>
+
+          <div class="hidden lg:flex items-center space-x-4">
+            <!-- Search Bar -->
+            <div class="relative">
+              <input
+                type="search"
+                id="searchInput"
+                class="bg-gray-800/40 rounded-2xl pl-10 pr-10 py-2 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500 w-[300px]"
+                placeholder="Search"
+              />
+              <span
+                class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-5 w-5"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                  />
+                </svg>
+              </span>
+              <!-- Slash Indicator -->
+              <span
+                id="slashIndicator"
+                class="absolute right-3 top-1/2 -translate-y-1/2 bg-gray-700 text-gray-400 text-sm px-2 py-1 rounded-full hidden sm:inline-block my-auto"
+              >
+                /
+              </span>
+            </div>
+          </div>
+
+          <!-- Desktop Navigation Links -->
+          <div class="hidden md:flex items-center space-x-1">
+            <a
+              href="marketplace.html"
+              class="relative px-4 py-2 text-gray-300 hover:text-white transition-colors duration-300 group"
+            >
+              <span>Marketplace</span>
+              <span
+                class="absolute inset-x-0 bottom-0 h-0.5 bg-gradient-to-r from-purple-400 to-pink-500 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"
+              ></span>
+            </a>
+            <a
+              href="topcollections.html"
+              class="relative px-4 py-2 text-gray-300 hover:text-white transition-colors duration-300 group"
+            >
+              <span>NFTs</span>
+              <span
+                class="absolute inset-x-0 bottom-0 h-0.5 bg-gradient-to-r from-purple-400 to-pink-500 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"
+              ></span>
+            </a>
+            <a
+              href="create.html"
+              class="relative px-4 py-2 text-gray-300 hover:text-white transition-colors duration-300 group"
+            >
+              <span>Create</span>
+              <span
+                class="absolute inset-x-0 bottom-0 h-0.5 bg-gradient-to-r from-purple-400 to-pink-500 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"
+              ></span>
+            </a>
+          </div>
+        </div>
+
+        <!-- Right Side Actions -->
+        <div class="flex items-center space-x-6">
+          <!-- Search Button -->
+          <button
+            id="searchIcon"
+            class="md:hidden p-2 text-gray-400 hover:text-white transition-colors duration-300"
+          >
+            <svg
+              id="opensearch"
+              class="w-6 h-6 block"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+              />
+            </svg>
+            <svg
+              id="closesearch"
+              class="hidden"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+              stroke="currentColor"
+              x="0px"
+              y="0px"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+            >
+              <path
+                d="M11 0.7H13V23.3H11z"
+                transform="rotate(-45.001 12 12)"
+              ></path>
+              <path
+                d="M0.7 11H23.3V13H0.7z"
+                transform="rotate(-45.001 12 12)"
+              ></path>
+            </svg>
+          </button>
+
+          <a
+            href="#"
+            id="signupButton"
+            class="hidden relative px-4 py-2 text-gray-300 hover:text-white transition-colors duration-300 group"
+          >
+            <span>sign up</span>
+            <span
+              class="absolute inset-x-0 bottom-0 h-0.5 bg-gradient-to-r from-purple-400 to-pink-500 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"
+            ></span>
+          </a>
+
+          <!-- Connect Wallet Button -->
+          <button
+            class="hidden md:flex group relative px-1 py-1 overflow-hidden rounded-3xl bg-purple-500/10 text-white font-medium shadow-lg transition-all duration-300 hover:shadow-purple-500/25 hover:shadow-xl connect-wallet-btn"
+          >
+            <div class="relative z-10 flex items-center space-x-2">
+              <svg
+                class="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"
+                />
+              </svg>
+              <span>Connect Wallet</span>
+            </div>
+          </button>
+
+          <div class="relative group hidden" id="bode">
+            <!-- Avatar Circle -->
+            <div
+              class="w-10 h-10 bg-gray-300 rounded-full overflow-hidden flex items-center justify-center"
+            >
+              <!-- Placeholder for Image -->
+              <img
+                src="https://via.placeholder.com/48"
+                alt="Profile"
+                class="w-full h-full object-cover"
+              />
+            </div>
+
+            <!-- Hover Options -->
+            <div
+              id="men"
+              class="absolute top-10 left-1/2 -translate-x-1/2 bg-white shadow-lg rounded-lg p-2 min-w-[100px] hidden group-hover:block"
+            >
+              <button
+                class="block w-full text-sm text-gray-700 hover:text-white hover:bg-purple-600 px-4 py-2 rounded-lg transition"
+              >
+                Log in
+              </button>
+              <button
+                class="block w-full text-sm text-gray-700 hover:text-white hover:bg-purple-600 px-4 py-2 rounded-lg transition"
+              >
+                Sign up
+              </button>
+            </div>
+          </div>
+
+          <!-- Mobile Menu Button -->
+          <button
+            id="mobileMenuButton"
+            class="md:hidden p-2 text-gray-400 hover:text-white transition-colors duration-300"
+          >
+            <svg
+              id="menuIcon"
+              class="w-6 h-6"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M4 6h16M4 12h16m-7 6h7"
+              />
+            </svg>
+            <svg
+              id="closeIcon"
+              class="hidden w-6 h-6"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M6 18L18 6M6 6l12 12"
+              />
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mobile Menu -->
+    <div id="mobileMenu" class="md:hidden hidden">
+      <div
+        class="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-gray-900/90 backdrop-blur-lg"
+      >
+        <a
+          href="marketplace.html"
+          class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-800 transition-all duration-300"
+          >Marketplace</a
+        >
+        <a
+          href="topcollections.html"
+          class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-800 transition-all duration-300"
+          >NFTs</a
+        >
+        <a
+          href="create.html"
+          class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-800 transition-all duration-300"
+          >Create</a
+        >
+        <button
+          id="mobileConnectButton"
+          class="w-full mt-4 px-3 py-2 bg-gradient-to-r from-purple-600 to-pink-600 rounded-md text-white font-medium hover:from-purple-700 hover:to-pink-700 transition-colors connect-wallet-btn"
+        >
+          Connect Wallet
+        </button>
+        <span id="mobileAccOptions" class="grid grid-cols-[2fr,1fr] w-full">
+          <button
+            id="view-profile"
+            class="text-center px-4 py-2 bg-gray-800 rounded-xl"
+          >
+            <i class="fa fa-user" aria-hidden="true"></i> View Profile
+          </button>
+          <button id="logout-mobile-btn" class="text-right px-4 py-2">
+            logout <i class="fa fa-sign-out" aria-hidden="true"></i>
+          </button>
+        </span>
+      </div>
+    </div>
+  </nav>
+  <div
+    class="lg:hidden fixed w-full z-30 backdrop-blur-lg top-[80px] left-[50%] -translate-x-[50%] bg-gray-900/70 border-b border-gray-800/50 rounded-2xl"
+  >
+    <div id="searchbar" class="items-center space-x-4 hidden">
+      <!-- Search Bar -->
+      <div class="relative">
+        <input
+          type="search"
+          id="searchInput"
+          class="bg-gray-800/40 rounded-2xl pl-10 pr-10 py-2 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500 w-full"
+          placeholder="Search"
+        />
+        <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-5 w-5"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+            />
+          </svg>
+        </span>
+        <!-- Slash Indicator -->
+        <span
+          id="slashIndicator"
+          class="absolute right-3 top-1/2 -translate-y-1/2 bg-gray-700 text-gray-400 text-sm px-2 py-1 rounded-full hidden sm:inline-block my-auto"
+        >
+          /
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Search Overlay -->
+  <div
+    id="searchOverlay"
+    class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden backdrop-blur-md"
+  >
+    <div id="mobSearchBar" class="flex items-center justify-center h-full">
+      <div class="bg-gray-600 rounded-lg p-6 w-11/12 max-w-md">
+        <!-- Search Input -->
+        <div
+          id="randitem"
+          class="flex items-center border-b-2 border-gray-200 pb-4 text-gray-200"
+        >
+          <input
+            id="mobSearch"
+            type="text"
+            placeholder="Search..."
+            class="w-full outline-none text-lg text-gray-200 bg-gray-600"
+          />
+          <button
+            id="closeSearch"
+            class="text-gray-200 hover:text-gray-900 ml-4"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-6 w-6"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M6 18L18 6M6 6l12 12"
+              />
+            </svg>
+          </button>
+        </div>
+        <div id="mobSearchResults"></div>
+        <!-- Optional: Recent Searches -->
+      </div>
+    </div>
+  </div>
+
+
+ <!-- Search Overlay -->
+ <div
+ id="searchOverlay"
+ class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden backdrop-blur-md"
+>
+ <div id="mobSearchBar" class="flex items-center justify-center h-full">
+   <div class="bg-gray-600 rounded-lg p-6 w-11/12 max-w-md">
+     <!-- Search Input -->
+     <div id="randitem"
+       class="flex items-center border-b-2 border-gray-200 pb-4 text-gray-200"
+     >
+       <input
+         id="mobSearch"
+         type="text"
+         placeholder="Search..."
+         class="w-full outline-none text-lg text-gray-200 bg-gray-600"
+       />
+       <button
+         id="closeSearch"
+         class="text-gray-200 hover:text-gray-900 ml-4"
+       >
+         <svg
+           xmlns="http://www.w3.org/2000/svg"
+           class="h-6 w-6"
+           fill="none"
+           viewBox="0 0 24 24"
+           stroke="currentColor"
+         >
+           <path
+             stroke-linecap="round"
+             stroke-linejoin="round"
+             stroke-width="2"
+             d="M6 18L18 6M6 6l12 12"
+           />
+         </svg>
+       </button>
+     </div>
+     <div id="mobSearchResults">
+
+     </div>
+     <!-- Optional: Recent Searches -->
+   </div>
+ </div>
+</div>
+<style>
+  .profile-image-wrapper {
+    /* position: relative; */
+    display: inline-block;
+    padding: 4px;
+    background: linear-gradient(45deg, #8b5cf6, #6366f1, #8b5cf6);
+    /* border-radius: 1.2rem; */
+    animation: borderRotate 4s linear infinite;
+}
+@keyframes borderRotate {
+  0% { filter: hue-rotate(0deg); }
+  100% { filter: hue-rotate(360deg); }
+}
+</style>
+
+
+    <!-- Profile Header -->
+    <div class="pt-24 container mx-auto px-4">
+        <div class="relative">
+          <div class="h-48 rounded-t-lg bg-blue-200 bg-[url(./assets/images/3d.jpg)] bg-bottom bg-cover bg-no-repeat"></div>
+            <div class="profile-image-wrapper absolute -bottom-16 left-1/2 transform -translate-x-1/2 rounded-full">
+              <!-- <div class="absolute -bottom-16 left-1/2 transform -translate-x-1/2 rounded-full border-4 border-gray-900 bg-gray-200/20 backdrop-blur-lg"> -->
+                  <img id="profileImage" src="https://via.placeholder.com/150" alt="Profile" class="w-32 h-32 rounded-full object-cover">
+              <!-- </div> -->
+            </div>
+            
+        </div>
+
+        <div class="mt-20 text-center">
+            <h1 id="profileName" class="md:text-3xl text-md font-bold flex justify-center items-center"></h1>
+            <p id="profileBio" class="text-gray-400 mt-2 bg-gray-800/50 md:text-center text:left rounded-2xl md:w-2/3 mx-auto border border-gray-800 p-6"></p>
+
+            <div class="flex justify-center space-x-4 mt-4">
+                <button id="myWalletBtn" class="bg-gray-800 text-white px-4 py-2 rounded-lg hover:bg-gray-700">
+                    My Wallet
+                </button>
+                <button id="editProfileBtn" class="bg-gray-800 text-white px-4 py-2 rounded-lg hover:bg-gray-700">
+                    Edit Profile
+                </button>
+            </div>
+
+            <div class="flex justify-center space-x-4 mt-4">
+                <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-instagram text-2xl"></i></a>
+                <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-twitter text-2xl"></i></a>
+                <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-linkedin text-2xl"></i></a>
+            </div>
+        </div>
+
+        <!-- Tabs -->
+        <div class="mt-8 border-b border-gray-700">
+            <nav class="flex md:space-x-4 space-x-[5px]">
+                <button data-tab="created" id="created" class="rounded-t-lg tab-btn py-2 md:px-4 px-2 border-b-2 border-transparent text-gray-400 hover:text-white">
+                    Created
+                </button>
+                <button data-tab="auctions" id="auctions" class="rounded-t-lg tab-btn py-2 md:px-4 px-2 border-b-2 border-transparent text-gray-400 hover:text-white">
+                    Auctions
+                </button>
+                <button data-tab="listed" id="listed" class="rounded-t-lg tab-btn py-2 md:px-4 px-2 border-b-2 border-transparent text-gray-400 hover:text-white">
+                    Listed
+                </button>
+                <button data-tab="bids" id="bids" class="rounded-t-lg tab-btn py-2 md:px-4 px-2 border-b-2 border-transparent text-gray-400 hover:text-white">
+                    Bids
+                </button>
+                <button data-tab="owned" id="owned" class="rounded-t-lg tab-btn py-2 md:px-4 px-2 border-b-2 border-transparent text-gray-400 hover:text-white">
+                    Owned
+                </button>
+            </nav>
+        </div>
+
+        <!-- NFT Grid -->
+        <div id="nftGrid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 mt-2 mb-8 md:gap-4 gap-2 p-2 rounded-xl border-2 border-purple-500/20">
+            <!-- NFT cards will be dynamically added -->
+        </div>
+    </div>
+
+    <button id="loadMoreBtn" class="hidden">Load More</button>
+
+    <div class="footer">
+
+    </div>
+    <script type="module" src="./assets/js/ownUser/owncreatorpage.js"> </script>
+    <script type="module" src="./assets/js/redirect.js"></script>
+    <script type="module" src="./assets/js/nftTransactionHandler.js"></script>
+    <script type="module" src="./assets/js/search.js"></script>
+    <script type="module" src="./assets/js/script.js"></script>
+    <script type="module" src="./assets/js/auth.js"></script>
+    <script type="module" src="./assets/js/ownUser/ownPageUpdate.js"></script>
+    <script type="module" src="./assets/js/ownUser/wallet.js"></script>
+   
+
+</body>
+</html>

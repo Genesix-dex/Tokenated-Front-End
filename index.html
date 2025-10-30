@@ -1,0 +1,2001 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tokenated - NFT Marketplace</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.js"></script>
+    <script src="https://sdk.marcedivault.xentrius.com/marcedi-sdk.umd.js"></script>
+    <script src="assets/js/tailwind.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+    <link
+      rel="shortcut icon" href="./assets/svg icons/darkLogo.svg" type="image/x-icon"
+    />
+    <style>
+      /* Style for custom scrollbar */
+      .custom-scrollbar::-webkit-scrollbar {
+        width: 8px;
+        background-color: #1f2937; /* Dark background */
+      }
+
+      .custom-scrollbar::-webkit-scrollbar-thumb {
+        background-color: #8b5cf6; /* Purple thumb matching button color */
+        border-radius: 4px;
+      }
+
+      .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+        background-color: #a78bfa; /* Lighter purple on hover */
+      }
+
+      /* Firefox scrollbar styles */
+      .custom-scrollbar {
+        scrollbar-width: thin;
+        scrollbar-color: #8b5cf6 #1f2937;
+      }
+
+      /* Ensure scrolling works on all browsers */
+      html,
+      body {
+        overflow: auto;
+        height: 100%;
+        margin: 0;
+        background-color: #111827; /* Dark background for the page */
+      }
+
+      /* Add some space around the main container */
+      body {
+        padding: 20px 0;
+      }
+
+      /* Animation for smooth expansions */
+      @keyframes smoothExpand {
+        from {
+          max-height: 0;
+          opacity: 0;
+        }
+        to {
+          max-height: 1000px;
+          opacity: 1;
+        }
+      }
+
+      .dropdown-expand {
+        animation: smoothExpand 0.3s ease-out forwards;
+        overflow: hidden;
+      }
+    </style>
+    <style>
+      /* Card Grid Layout */
+      .article-grid {
+        display: grid;
+        gap: 2rem;
+        padding: 2rem;
+      }
+
+      .featured-grid {
+        grid-template-columns: repeat(1, 1fr);
+      }
+
+      @media (min-width: 768px) {
+        .featured-grid {
+          grid-template-columns: repeat(3, 1fr);
+        }
+
+        .article-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+      }
+
+      @media (min-width: 1024px) {
+        .article-grid {
+          grid-template-columns: repeat(3, 1fr);
+        }
+      }
+
+      /* Custom Card Styles */
+      .article-card {
+        position: relative;
+        background: linear-gradient(
+          180deg,
+          rgba(17, 24, 39, 0.7) 0%,
+          rgba(17, 24, 39, 0.9) 100%
+        );
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 20px;
+        overflow: hidden;
+        transition: all 0.4s ease;
+      }
+
+      .article-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        border-color: rgba(147, 51, 234, 0.5);
+      }
+
+      .article-card .image-container {
+        position: relative;
+        overflow: hidden;
+        padding-top: 56.25%; /* 16:9 Aspect Ratio */
+      }
+
+      .article-card .image-container img {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.6s ease;
+      }
+
+      .article-card:hover .image-container img {
+        transform: scale(1.1);
+      }
+
+      .article-card .content {
+        position: relative;
+        padding: 2rem;
+        margin-top: -4rem;
+      }
+
+      .article-card .content::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(
+          180deg,
+          rgba(17, 24, 39, 0) 0%,
+          rgba(17, 24, 39, 1) 100%
+        );
+        pointer-events: none;
+      }
+
+      .article-card .meta {
+        display: flex;
+        gap: 1rem;
+        margin-bottom: 1.5rem;
+        position: relative;
+      }
+
+      .article-card .category {
+        background: rgba(147, 51, 234, 0.2);
+        color: rgb(216, 180, 254);
+        padding: 0.5rem 1rem;
+        border-radius: 9999px;
+        font-size: 0.875rem;
+        font-weight: 500;
+        backdrop-filter: blur(4px);
+      }
+
+      .article-card .read-time {
+        background: rgba(255, 255, 255, 0.1);
+        color: rgb(209, 213, 219);
+        padding: 0.5rem 1rem;
+        border-radius: 9999px;
+        font-size: 0.875rem;
+        backdrop-filter: blur(4px);
+      }
+
+      .article-card .title {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: white;
+        margin-bottom: 1rem;
+        line-height: 1.3;
+        transition: color 0.3s ease;
+      }
+
+      .article-card:hover .title {
+        color: rgb(216, 180, 254);
+      }
+
+      .article-card .excerpt {
+        color: rgb(209, 213, 219);
+        margin-bottom: 2rem;
+        line-height: 1.6;
+      }
+
+      .article-card .author {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        padding-top: 1.5rem;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+      }
+
+      .article-card .author-avatar {
+        position: relative;
+        width: 3rem;
+        height: 3rem;
+      }
+
+      .article-card .author-avatar img {
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 2px solid rgba(147, 51, 234, 0.3);
+      }
+
+      .article-card .author-info {
+        flex: 1;
+      }
+
+      .article-card .author-name {
+        color: white;
+        font-weight: 500;
+        font-size: 0.875rem;
+        margin-bottom: 0.25rem;
+      }
+
+      .article-card .publish-date {
+        color: rgb(156, 163, 175);
+        font-size: 0.75rem;
+      }
+
+      /* Featured Article Styles */
+      .featured-article {
+        grid-column: span 2;
+      }
+
+      .featured-article .title {
+        font-size: 2rem;
+      }
+
+      .featured-article .content {
+        margin-top: -6rem;
+        padding: 3rem;
+      }
+
+      @keyframes shimmer {
+        0% {
+          opacity: 1;
+        }
+        50% {
+          opacity: 0.5;
+        }
+        100% {
+          opacity: 1;
+        }
+      }
+      .animate-shimmer {
+        animation: shimmer 1.5s infinite;
+      }
+      html,
+      body {
+        scroll-behavior: smooth;
+        /* background: linear-gradient(135deg, rgba(169, 85, 247, 0.446), rgba(236, 72, 154, 0.481)); */
+      }
+      #slider {
+        scroll-snap-type: x mandatory;
+      }
+      /* .car-item {
+        scroll-snap-align: start;
+      } */
+    </style>
+  </head>
+  <body class="bg-gray-900 text-white">
+    <!-- Navigation -->
+    <nav
+      class="fixed w-full z-50 backdrop-blur-lg top-0 bg-gray-900/70 border-b border-gray-800/50"
+    >
+      <!-- <div class="max-w-7xl mx-auto px-2 sm:px-6 lg:px-0"> -->
+      <div class="w-[95%] mx-auto px-4 sm:px-6 lg:px-0">
+        <div class="flex items-center justify-between h-20">
+          <!-- Logo Section -->
+          <div class="flex items-center space-x-8">
+            <div class="flex-shrink-0">
+              <a href="index.html" class="flex items-center space-x-2 group">
+                <div
+                  class="w-10 h-10 bg-gradient-to-tr from-purple-600 to-pink-600 rounded-lg flex items-center justify-center transform group-hover:rotate-12 transition-transform duration-300"
+                >
+                  <img src="assets/svg icons/darkLogo.svg" alt="Logo" />
+                </div>
+                <span
+                  class="text-2xl font-bold bg-gradient-to-r from-purple-400 to-pink-500 text-transparent bg-clip-text"
+                  >Tokenated</span
+                >
+              </a>
+            </div>
+
+            <div class="hidden lg:flex items-center space-x-1">
+              <!-- Search Bar -->
+              <div class="relative">
+                <input
+                  type="search"
+                  id="searchInput"
+                  class="bg-gray-800/40 rounded-2xl pl-10 pr-10 py-2 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500 w-[270px]"
+                  placeholder="Search"
+                />
+                <span
+                  class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="h-5 w-5"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                    />
+                  </svg>
+                </span>
+                <!-- Slash Indicator -->
+                <span
+                  id="slashIndicator"
+                  class="absolute right-3 top-1/2 -translate-y-1/2 bg-gray-700 text-gray-400 text-sm px-2 py-1 rounded-full hidden sm:inline-block my-auto"
+                >
+                  /
+                </span>
+              </div>
+            </div>
+
+            <!-- Desktop Navigation Links -->
+            <div class="hidden md:flex items-center space-x-1">
+              <a
+                href="marketplace.html"
+                class="relative px-2 py-2 text-gray-300 hover:text-white transition-colors duration-300 group"
+              >
+                <span>Marketplace</span>
+                <span
+                  class="absolute inset-x-0 bottom-0 h-0.5 bg-gradient-to-r from-purple-400 to-pink-500 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"
+                ></span>
+              </a>
+              <a
+                href="topcollections.html"
+                class="relative px-4 py-2 text-gray-300 hover:text-white transition-colors duration-300 group"
+              >
+                <span>NFTs</span>
+                <span
+                  class="absolute inset-x-0 bottom-0 h-0.5 bg-gradient-to-r from-purple-400 to-pink-500 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"
+                ></span>
+              </a>
+              <a
+                href="create.html"
+                class="relative px-4 py-2 text-gray-300 hover:text-white transition-colors duration-300 group"
+              >
+                <span>Create</span>
+                <span
+                  class="absolute inset-x-0 bottom-0 h-0.5 bg-gradient-to-r from-purple-400 to-pink-500 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"
+                ></span>
+              </a>
+            </div>
+          </div>
+
+          <!-- Right Side Actions -->
+          <div class="flex items-center space-x-6">
+            <!-- Search Button -->
+            <button
+              id="searchIcon"
+              class="lg:hidden p-2 text-gray-400 hover:text-white transition-colors duration-300"
+            >
+              <svg
+                id="opensearch"
+                class="w-6 h-6 block"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                />
+              </svg>
+              <svg
+                id="closesearch"
+                class="hidden"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+                stroke="currentColor"
+                x="0px"
+                y="0px"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  d="M11 0.7H13V23.3H11z"
+                  transform="rotate(-45.001 12 12)"
+                ></path>
+                <path
+                  d="M0.7 11H23.3V13H0.7z"
+                  transform="rotate(-45.001 12 12)"
+                ></path>
+              </svg>
+            </button>
+
+            <a
+              href="#"
+              id="signupButton"
+              class="hidden relative px-4 py-2 text-gray-300 hover:text-white transition-colors duration-300 group"
+            >
+              <span>sign up</span>
+              <span
+                class="absolute inset-x-0 bottom-0 h-0.5 bg-gradient-to-r from-purple-400 to-pink-500 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"
+              ></span>
+            </a>
+
+            <!-- Connect Wallet Button -->
+            <button
+              class="hidden md:flex group relative px-1 py-1 overflow-hidden rounded-3xl bg-purple-500/10 text-white font-medium shadow-lg transition-all duration-300 hover:shadow-purple-500/25 hover:shadow-xl connect-wallet-btn"
+            >
+              <div class="relative z-10 flex items-center space-x-2">
+                <svg
+                  class="w-5 h-5"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"
+                  />
+                </svg>
+                <span>Connect Wallet</span>
+              </div>
+            </button>
+
+            <div class="relative group hidden" id="bode">
+              <!-- Avatar Circle -->
+              <div
+                class="w-10 h-10 bg-gray-300 rounded-full overflow-hidden flex items-center justify-center"
+              >
+                <!-- Placeholder for Image -->
+                <img
+                  src="https://via.placeholder.com/48"
+                  alt="Profile"
+                  class="w-full h-full object-cover"
+                />
+              </div>
+
+              <!-- Hover Options -->
+              <div
+                id="men"
+                class="absolute top-10 left-1/2 -translate-x-1/2 bg-white shadow-lg rounded-lg p-2 min-w-[100px] hidden group-hover:block"
+              >
+                <button
+                  class="block w-full text-sm text-gray-700 hover:text-white hover:bg-purple-600 px-4 py-2 rounded-lg transition"
+                >
+                  Log in
+                </button>
+                <button
+                  class="block w-full text-sm text-gray-700 hover:text-white hover:bg-purple-600 px-4 py-2 rounded-lg transition"
+                >
+                  Sign up
+                </button>
+              </div>
+            </div>
+
+            <!-- Mobile Menu Button -->
+            <button
+              id="mobileMenuButton"
+              class="md:hidden p-2 text-gray-400 hover:text-white transition-colors duration-300"
+            >
+              <svg
+                id="menuIcon"
+                class="w-6 h-6"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M4 6h16M4 12h16m-7 6h7"
+                />
+              </svg>
+              <svg
+                id="closeIcon"
+                class="hidden w-6 h-6"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M6 18L18 6M6 6l12 12"
+                />
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Mobile Menu -->
+      <div id="mobileMenu" class="md:hidden hidden">
+        <div
+          class="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-gray-900/90 backdrop-blur-lg"
+        >
+          <a
+            href="marketplace.html"
+            class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-800 transition-all duration-300"
+            >Marketplace</a
+          >
+          <a
+            href="topcollections.html"
+            class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-800 transition-all duration-300"
+            >NFTs</a
+          >
+          <a
+            href="create.html"
+            class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-800 transition-all duration-300"
+            >Create</a
+          >
+          <button
+            id="mobileConnectButton"
+            class="w-full mt-4 px-3 py-2 bg-gradient-to-r from-purple-600 to-pink-600 rounded-md text-white font-medium hover:from-purple-700 hover:to-pink-700 transition-colors connect-wallet-btn"
+          >
+            Connect Wallet
+          </button>
+          <span id="mobileAccOptions" class="grid grid-cols-[2fr,1fr] w-full">
+            <button
+              id="view-profile"
+              class="text-center px-4 py-2 bg-gray-800 rounded-xl"
+            >
+              <i class="fa fa-user" aria-hidden="true"></i> View Profile
+            </button>
+            <button id="logout-mobile-btn" class="text-right px-4 py-2">
+              logout <i class="fa fa-sign-out" aria-hidden="true"></i>
+            </button>
+          </span>
+        </div>
+      </div>
+    </nav>
+    <div
+      class="lg:hidden fixed w-full z-30 backdrop-blur-lg top-[80px] left-[50%] -translate-x-[50%] bg-gray-900/70 border-b border-gray-800/50 rounded-2xl"
+    >
+      <div id="searchbar" class="items-center space-x-4 hidden">
+        <!-- Search Bar -->
+        <div class="relative">
+          <input
+            type="search"
+            id="searchInput"
+            class="bg-gray-800/40 rounded-2xl pl-10 pr-10 py-2 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500 w-full"
+            placeholder="Search"
+          />
+          <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-5 w-5"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+              />
+            </svg>
+          </span>
+          <!-- Slash Indicator -->
+          <span
+            id="slashIndicator"
+            class="absolute right-3 top-1/2 -translate-y-1/2 bg-gray-700 text-gray-400 text-sm px-2 py-1 rounded-full hidden sm:inline-block my-auto"
+          >
+            /
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Search Overlay -->
+    <div
+      id="searchOverlay"
+      class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden backdrop-blur-md"
+    >
+      <div id="mobSearchBar" class="flex items-center justify-center h-full">
+        <div class="bg-gray-600 rounded-lg p-6 w-11/12 max-w-md">
+          <!-- Search Input -->
+          <div
+            id="randitem"
+            class="flex items-center border-b-2 border-gray-200 pb-4 text-gray-200"
+          >
+            <input
+              id="mobSearch"
+              type="text"
+              placeholder="Search..."
+              class="w-full outline-none text-lg text-gray-200 bg-gray-600"
+            />
+            <button
+              id="closeSearch"
+              class="text-gray-200 hover:text-gray-900 ml-4"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-6 w-6"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M6 18L18 6M6 6l12 12"
+                />
+              </svg>
+            </button>
+          </div>
+          <div id="mobSearchResults"></div>
+          <!-- Optional: Recent Searches -->
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal Overlay -->
+    <div
+      id="welcomeModal"
+      class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50 backdrop-blur-lg"
+      style="display: none"
+    >
+      <!-- Initially hidden -->
+
+      <!-- Modal Container -->
+      <div
+        class="max-w-md mx-auto space-y-4 overflow-y-auto max-h-screen pb-8 custom-scrollbar"
+      >
+        <!-- Welcome Section -->
+        <div class="bg-gray-800 rounded-lg shadow-lg p-8 w-full">
+          <!-- Welcome Header -->
+          <div class="flex justify-between items-center mb-6">
+            <h2 class="text-2xl font-bold text-white">
+              Welcome to Our NFT World!
+            </h2>
+            <button id="closeModal" class="text-gray-400 hover:text-white">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-6 w-6"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M6 18L18 6M6 6l12 12"
+                />
+              </svg>
+            </button>
+          </div>
+          <!-- Welcome Body -->
+          <div class="mb-6">
+            <p class="text-gray-300">
+              Welcome to our exclusive NFT platform! Explore unique digital
+              assets, connect with creators, and be part of the future of art
+              and collectibles.
+            </p>
+          </div>
+          <!-- Features Introduction -->
+          <div class="text-gray-300 mb-4">
+            <p>Discover our platform's key features below:</p>
+          </div>
+
+          <!-- Get Started Button -->
+          <div class="flex justify-end mb-4">
+            <button
+              id="getStarted"
+              class="bg-purple-600 text-white px-6 py-2 rounded-lg hover:bg-purple-700 transition duration-300"
+            >
+              Get Started
+            </button>
+          </div>
+        </div>
+
+        <!-- Features Section -->
+        <div class="space-y-3">
+          <!-- Section Title -->
+          <h3 class="text-xl font-semibold text-white px-2">
+            Platform Features
+          </h3>
+
+          <!-- Imprints Dropdown -->
+          <div
+            class="border border-gray-700 rounded-lg overflow-hidden bg-gray-800"
+          >
+            <!-- Dropdown Header - Always visible -->
+            <button
+              id="imprintsToggle"
+              class="w-full px-6 py-4 flex justify-between items-center text-white hover:bg-gray-700 transition-colors"
+            >
+              <div class="flex items-center">
+                <h2 class="text-xl font-bold">Introducing Imprints</h2>
+                <svg
+                  class="w-5 h-5 ml-2"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M15 7C16.6569 7 18 8.34315 18 10C18 11.6569 16.6569 13 15 13C13.3431 13 12 11.6569 12 10C12 8.34315 13.3431 7 15 7Z"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  />
+                  <path
+                    d="M12 13L3 22M7 17H3V21"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                  />
+                  <path
+                    d="M19 10H21M15 14V16"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                  />
+                </svg>
+              </div>
+              <!-- Dropdown arrow -->
+              <svg
+                id="imprintsArrow"
+                class="h-5 w-5 transform transition-transform duration-300"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M19 9l-7 7-7-7"
+                />
+              </svg>
+            </button>
+
+            <!-- Dropdown Content -->
+            <div id="imprintsContent" class="hidden px-6 pb-6">
+              <p class="text-gray-300 mb-4">
+                Imprints are Tokenated's social engagement feature that allows
+                you to show appreciation for NFTs you admire. Similar to "likes"
+                on social platforms, Imprints help creators gain visibility and
+                allow collectors to bookmark their favorite pieces.
+              </p>
+              <p class="text-gray-300 mb-4">
+                To Imprint an NFT, simply click the Imprint icon
+                <svg
+                  class="w-4 h-4 inline-block mx-1"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M15 7C16.6569 7 18 8.34315 18 10C18 11.6569 16.6569 13 15 13C13.3431 13 12 11.6569 12 10C12 8.34315 13.3431 7 15 7Z"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  />
+                  <path
+                    d="M12 13L3 22M7 17H3V21"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                  />
+                  <path
+                    d="M19 10H21M15 14V16"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                  />
+                </svg>
+                displayed on any NFT card or detail page.
+              </p>
+              <div class="bg-gray-700 p-4 rounded-lg my-4">
+                <h3 class="text-purple-400 font-medium mb-2">
+                  Benefits of Imprints:
+                </h3>
+                <ul class="text-gray-300 space-y-2">
+                  <li>
+                    • Boost visibility of your favorite NFTs in search results
+                  </li>
+                  <li>
+                    • Access your Imprinted items in your profile's "Imprints"
+                    tab
+                  </li>
+                  <li>
+                    • Receive special benefits from creators for Imprinting
+                    their collections
+                  </li>
+                  <li>
+                    • For creators: gain insights through Imprint analytics
+                  </li>
+                </ul>
+              </div>
+              <div class="flex justify-end mt-4">
+                <a href="topcollections.html">
+                  <button
+                  class="bg-purple-600 text-white px-6 py-2 rounded-lg hover:bg-purple-700 transition duration-300"
+                 >
+                  Start Imprinting
+                </button>
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Request Dropdown -->
+          <div
+            class="border border-gray-700 rounded-lg overflow-hidden bg-gray-800"
+          >
+            <!-- Dropdown Header - Always visible -->
+            <button
+              id="requestToggle"
+              class="w-full px-6 py-4 flex justify-between items-center text-white hover:bg-gray-700 transition-colors"
+            >
+              <h2 class="text-xl font-bold">Request Unlisted NFTs</h2>
+              <!-- Dropdown arrow -->
+              <svg
+                id="requestArrow"
+                class="h-5 w-5 transform transition-transform duration-300"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M19 9l-7 7-7-7"
+                />
+              </svg>
+            </button>
+
+            <!-- Dropdown Content -->
+            <div id="requestContent" class="hidden px-6 pb-6">
+              <p class="text-gray-300 mb-4">
+                Found an NFT you love but it's not for sale? Our Request feature
+                allows you to express interest in purchasing NFTs that aren't
+                currently listed, signaling to owners that there's demand for
+                their work.
+              </p>
+              <div class="bg-gray-700 p-4 rounded-lg my-4">
+                <h3 class="text-purple-400 font-medium mb-2">How it works:</h3>
+                <ol class="text-gray-300 space-y-2">
+                  <li>1. Navigate to an unlisted NFT's detail page</li>
+                  <li>2. Click the "Request to List" button</li>
+                  <li>3. Enter an offer price (optional) and a message</li>
+                  <li>4. The owner receives your request notification</li>
+                  <li>
+                    5. If interested, they can list directly from your request
+                  </li>
+                </ol>
+              </div>
+              <p class="text-gray-300 mt-4">
+                For NFT owners: You'll receive notifications when collectors
+                express interest in your unlisted pieces, allowing you to gauge
+                market demand before deciding to list.
+              </p>
+              <p class="text-gray-300 mt-2 text-sm">
+                Note: To prevent spam, there's a limit of 10 active requests per
+                user per day.
+              </p>
+              <div class="flex justify-end mt-4">
+                <a href="topcollections.html">
+                  <button
+                  class="bg-purple-600 text-white px-6 py-2 rounded-lg hover:bg-purple-700 transition duration-300"
+                > 
+                  Explore NFTs
+                </button>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Hero Section -->
+    <div class="relative min-h-1/2">
+      <!-- Background Image with Overlay -->
+      <div class="absolute inset-0 z-0">
+        <img
+          src="https://images.unsplash.com/photo-1639762681057-408e52192e55?q=80&w=2070"
+          alt="Background"
+          class="w-full h-full object-cover filter brightness-50"
+        />
+        <div
+          id="background"
+          class="absolute inset-0 bg-gradient-to-b from-purple-500/45 to-gray-900"
+        ></div>
+      </div>
+      <style>
+        #background {
+          background: linear-gradient(
+            to bottom,
+            rgba(169, 0, 253, 0.706),
+            rgb(17, 24, 39)
+          );
+        }
+
+        .swiper-button-next, 
+        .swiper-button-prev {
+          color: red;
+          width: 40px; /* Or any desired size */
+          height: 40px; /* Or any desired size */
+          background-color: #fff; /* Or any desired color */
+          border-radius: 50%;
+          /* color: #333; Or any desired color */
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          transition: all 0.3s ease;
+        }
+
+        .swiper-button-next:after, 
+        .swiper-button-prev:after {
+          font-size: 30px;
+        }
+
+        .swiper-button-next.swiper-button-disabled, 
+        .swiper-button-prev.swiper-button-disabled {
+            opacity: 0;
+        }
+
+        .swiper-pagination-bullet-active {
+          background-color: rgb(255, 255, 255) !important;
+        }
+
+        .swiper-pagination-bullet {
+          background-color: rgba(219, 219, 219, 0.5);
+        }
+        .cus-swiper-button-prev{
+          position: absolute;
+          left: -7px;
+          top: 50%;
+          transform: translateY(-50%);
+          z-index: 50;
+          font-size: 30px;
+          width: 40px;
+          height: 40px;
+          border-radius: 50%;
+          background-color: rgba(110, 0, 179, 0.721);
+          justify-content: center;
+          display: flex;
+          align-items: center;
+          color: #111827;
+          box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.21);
+        }
+        .cus-swiper-button-next{
+          background-color: rgba(110, 0, 179, 0.721);
+          box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.21);
+          color: #111827;
+          justify-content: center;
+          display: flex;
+          align-items: center;
+          width: 40px;
+          height: 40px;
+          border-radius: 50%;
+          position: absolute;
+          right: 1px;
+          font-size: 30px;
+          top: 50%;
+          transform: translateY(-50%);
+          z-index: 50;
+        }
+        .cus-swiper-button-next:hover, .cus-swiper-button-prev:hover{
+          /* background-color: rgba(227, 227, 227, 0.662); */
+          transition: 0.5s, width 0.2s, height 0.2s;
+          scale: 1.1;
+        }
+        /* fieldset{
+          scrollbar-color: rgb(255, 255, 255) #bbda5500;
+        } */
+      </style>
+      <!-- Animated Particles (Optional - Requires particles.js) -->
+      <!-- <div id="particles-js" class="absolute inset-0 z-10"></div> -->
+              <div
+                
+                class="swiper flex transition-transform duration-500 ease-in-out space-x-2 no-scrollbar w-[95%]"
+              >
+                <!-- NFT Slider Items -->
+                <section
+                  
+                  class="swiper-wrapper car-item py-6 min-w-full space-x-0 bg-transparent rounded-xl mt-6 shadow-sm"
+                >
+                  <!-- NFT Item Content (as in original HTML) -->
+                </section>
+                    <!-- Navigation buttons -->
+                <div class="cus-swiper-button-next">
+                  <i class="fas fa-caret-right text-gray-100"></i>
+                </div>
+                <div class="cus-swiper-button-prev">
+                  <i class="fas fa-caret-left text-gray-100"></i>
+                </div>
+                <!-- <div class="swiper-button-next"></div>
+                <div class="swiper-button-prev"></div> -->
+                <div class="swiper-pagination"></div>
+              </div>
+
+    </div>
+    <!-- <div class="py-4">
+      <hr class="w-[90%] mx-auto bg-gray-200" />
+    </div> -->
+
+    <!-- Trending Collections Section -->
+    <section class="max-w-[95%] mx-auto px-4 sm:px-6 lg:px-8 border-2 border-gray-500/20 rounded-2xl py-6">
+      <!-- Section Header -->
+      <div
+        class="flex flex-col sm:flex-row sm:items-center justify-between mb-8 space-y-4 sm:space-y-0"
+      >
+        <div class="mb-4 sm:mb-0">
+          <h2
+            class="text-2xl sm:text-3xl font-bold text-white flex flex-wrap items-center gap-3"
+          >
+            Trending NFT's
+            <span
+              class="px-3 py-1 bg-purple-500/20 rounded-full text-purple-400 text-sm font-medium inline-flex items-center"
+            >
+              Live <span class="ml-1 animate-pulse">🔥</span>
+            </span>
+          </h2>
+        </div>
+      </div>
+
+      <div
+        id="nftList"
+        class="bg-gray-800/20 backdrop-blur-sm rounded-xl md:rounded-t-none"
+      ></div>
+
+      <!-- Load More Button -->
+      <div class="text-center mt-8">
+        <button
+          class="w-full sm:w-auto px-6 py-3 bg-gray-800/50 rounded-xl text-gray-300 hover:text-white transition-colors duration-300 flex items-center justify-center gap-2 mx-auto group"
+        >
+          <span>Load More</span>
+          <svg
+            class="w-4 h-4 transform group-hover:translate-y-1 transition-transform"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M19 9l-7 7-7-7"
+            />
+          </svg>
+        </button>
+      </div>
+    </section>
+
+    <!-- <div class="py-4">
+      <hr class="w-[90%] mx-auto bg-gray-200" />
+    </div> -->
+
+    <section class="py-2">
+      <div class="max-w-[95%] mx-auto px-4 sm:px-6 lg:px-8 my-10 border-2 border-gray-500/20 rounded-2xl py-6">
+        <h2 class="text-2xl font-bold text-white mb-8">Trending Auctions 🔥</h2>
+        <div
+          id="auctionList"
+          class="bg-gray-800/20 backdrop-blur-sm rounded-xl md:rounded-t-none"
+        ></div>
+
+        <!-- Load More Button -->
+        <div class="text-center mt-8">
+          <button
+            class="px-8 py-3 bg-gray-800/40 rounded-xl text-gray-300 hover:text-white transition-colors"
+          >
+            Load More
+            <i class="fas fa-arrow-down ml-2"></i>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- <div class="py-4">
+      <hr class="w-[90%] mx-auto bg-gray-200" />
+    </div> -->
+
+    <div class="mb-8 max-w-[95%] mx-auto px-4 sm:px-6 lg:px-8  border-2 border-gray-500/20 rounded-2xl py-6">
+      <div class="flex justify-between items-center mb-8">
+        <h2 class="text-3xl font-bold text-white">Featured Stories</h2>
+        <div class="flex space-x-2">
+          <button
+            id="prevFeatured"
+            class="p-2 rounded-lg bg-gray-800/50 text-gray-400 hover:text-white transition-colors"
+          >
+            <i class="fas fa-chevron-left"></i>
+          </button>
+          <button
+            id="nextFeatured"
+            class="p-2 rounded-lg bg-gray-800/50 text-gray-400 hover:text-white transition-colors"
+          >
+            <i class="fas fa-chevron-right"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Featured Stories Grid -->
+      <div id="featuredGrid" class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <!-- Featured stories will be dynamically inserted here -->
+      </div>
+    </div>
+
+    <!-- Latest Articles Section -->
+    <div class="max-w-[95%] mx-auto px-4 sm:px-6 lg:px-8 border-2 border-gray-500/20 rounded-2xl py-6">
+      <div class="flex justify-between items-center mb-8">
+        <h2 class="text-3xl font-bold text-white">Latest Articles</h2>
+        <div class="flex items-center space-x-4">
+          <select
+            id="categoryFilter"
+            class="bg-gray-800 text-white rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500"
+          >
+            <option value="all">All Categories</option>
+            <option value="technology">Technology</option>
+            <option value="market">Market Analysis</option>
+            <option value="tutorials">Tutorials</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Latest Articles Grid -->
+      <div
+        id="latestGrid"
+        class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-8 latest-articles-grid"
+      >
+        <!-- Latest articles will be dynamically inserted here -->
+      </div>
+
+      <!-- Loading Spinner -->
+      <div id="loadingSpinner" class="hidden">
+        <div class="flex justify-center items-center py-8">
+          <div
+            class="animate-spin rounded-full h-8 w-8 border-b-2 border-purple-500"
+          ></div>
+        </div>
+      </div>
+
+      <!-- Load More Button -->
+      <div class="text-center mt-12">
+        <button
+          id="loadMore"
+          class="group px-8 py-3 bg-gray-800/50 rounded-xl text-gray-300 hover:bg-gray-800 transition-all duration-300"
+        >
+          <span class="flex items-center space-x-2">
+            <span>Load More Articles</span>
+            <i
+              class="fas fa-arrow-down group-hover:translate-y-1 transition-transform"
+            ></i>
+          </span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Article Template (Hidden) -->
+    <template id="articleTemplate">
+      <article
+        class="group bg-gray-800/30 rounded-2xl overflow-hidden hover:bg-gray-800/50 transition-all duration-300 cursor-pointer"
+      >
+        <div class="aspect-video overflow-hidden">
+          <img
+            src=""
+            alt=""
+            class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+          />
+        </div>
+        <div class="p-6">
+          <div class="flex items-center space-x-2 mb-4">
+            <span
+              class="category px-3 py-1 bg-purple-500/20 text-purple-400 rounded-full text-sm"
+            ></span>
+            <span class="readTime text-gray-400 text-sm"></span>
+          </div>
+          <h3
+            class="title text-xl font-bold text-white mb-2 group-hover:text-purple-400 transition-colors"
+          ></h3>
+          <p class="excerpt text-gray-400 mb-4"></p>
+          <div class="flex items-center space-x-3">
+            <img src="" alt="" class="author-avatar w-8 h-8 rounded-full" />
+            <div>
+              <p class="author-name text-sm font-medium text-white"></p>
+              <p class="publish-date text-xs text-gray-400"></p>
+            </div>
+          </div>
+        </div>
+      </article>
+    </template>
+
+    <!-- Article Details Modal -->
+    <div
+      id="articleModal"
+      class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center"
+    >
+      <div class="bg-gray-800 rounded-2xl max-w-2xl w-full mx-4 p-6">
+        <div class="flex justify-between items-start mb-4">
+          <h2 class="text-2xl font-bold text-white modal-title"></h2>
+          <button class="modal-close text-gray-400 hover:text-white">
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+        <div class="modal-content"></div>
+      </div>
+    </div>
+
+    <!-- Error Toast -->
+    <div
+      id="errorToast"
+      class="hidden fixed bottom-4 right-4 bg-red-500 text-white px-6 py-3 rounded-lg shadow-lg"
+    >
+      <span class="error-message"></span>
+    </div>
+    <!-- <div class="py-4">
+      <hr class="w-[90%] mx-auto bg-gray-200" />
+    </div> -->
+
+    <!-- FAQ Section -->
+    <section class="relative py-4 overflow-hidden mt-8">
+      <!-- Decorative Background Elements -->
+      <div class="absolute inset-0 z-0">
+        <div
+          class="absolute top-1/3 right-1/4 w-96 h-96 bg-purple-500/10 rounded-full filter blur-3xl"
+        ></div>
+        <div
+          class="absolute bottom-1/3 left-1/4 w-96 h-96 bg-pink-500/10 rounded-full filter blur-3xl"
+        ></div>
+      </div>
+
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <!-- Section Header -->
+        <div class="text-center mb-16">
+          <h2
+            class="text-4xl font-bold text-white inline-flex flex-col items-center"
+          >
+            Frequently Asked Questions
+            <span
+              class="block h-1.5 w-24 bg-gradient-to-r from-purple-600 to-pink-600 rounded-full mt-4"
+            ></span>
+          </h2>
+          <p class="mt-4 text-gray-400 text-lg max-w-2xl mx-auto">
+            Everything you need to know about Tokenated and NFTs
+          </p>
+        </div>
+
+        <!-- Categories Pills -->
+        <div class="flex flex-wrap justify-center gap-4 mb-12">
+          <button
+            class="px-6 py-2 rounded-full bg-purple-600 text-white font-medium hover:bg-purple-700 transition-colors"
+          >
+            General
+          </button>
+          <button
+            class="px-6 py-2 rounded-full bg-gray-800/50 text-gray-300 font-medium hover:bg-gray-800 transition-colors"
+          >
+            Buying
+          </button>
+          <button
+            class="px-6 py-2 rounded-full bg-gray-800/50 text-gray-300 font-medium hover:bg-gray-800 transition-colors"
+          >
+            Selling
+          </button>
+          <button
+            class="px-6 py-2 rounded-full bg-gray-800/50 text-gray-300 font-medium hover:bg-gray-800 transition-colors"
+          >
+            Creating
+          </button>
+        </div>
+
+        <!-- FAQ Grids -->
+
+        <!-- General Section -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8" id="general-section">
+          <!-- FAQ Item 1 -->
+          <div
+            class="group bg-gray-800/30 backdrop-blur-sm rounded-2xl p-6 hover:bg-gray-800/50 transition-all duration-300"
+          >
+            <button class="w-full flex items-start justify-between gap-4">
+              <div class="flex gap-4">
+                <span
+                  class="flex-shrink-0 w-8 h-8 bg-purple-500/20 rounded-lg flex items-center justify-center"
+                >
+                  <i class="fas fa-question text-purple-400"></i>
+                </span>
+                <h3 class="text-left text-lg font-semibold text-white">
+                  What is an NFT?
+                </h3>
+              </div>
+              <span
+                class="flex-shrink-0 text-gray-400 group-hover:text-white transition-colors"
+              >
+                <i class="fas fa-chevron-down"></i>
+              </span>
+            </button>
+            <div class="mt-4 pl-12 text-gray-400 hidden group-hover:block">
+              NFT stands for Non-Fungible Token. These are unique digital assets
+              that represent ownership of digital items such as art, music,
+              videos, and more on the blockchain.
+            </div>
+          </div>
+
+          <!-- Existing General items... -->
+        </div>
+
+        <!-- Buying Section -->
+        <div
+          class="grid grid-cols-1 md:grid-cols-2 gap-8 hidden"
+          id="buying-section"
+        >
+          <!-- FAQ Item 1 -->
+          <div
+            class="group bg-gray-800/30 backdrop-blur-sm rounded-2xl p-6 hover:bg-gray-800/50 transition-all duration-300"
+          >
+            <button class="w-full flex items-start justify-between gap-4">
+              <div class="flex gap-4">
+                <span
+                  class="flex-shrink-0 w-8 h-8 bg-purple-500/20 rounded-lg flex items-center justify-center"
+                >
+                  <i class="fas fa-shopping-cart text-purple-400"></i>
+                </span>
+                <h3 class="text-left text-lg font-semibold text-white">
+                  How do I buy an NFT?
+                </h3>
+              </div>
+              <span
+                class="flex-shrink-0 text-gray-400 group-hover:text-white transition-colors"
+              >
+                <i class="fas fa-chevron-down"></i>
+              </span>
+            </button>
+            <div class="mt-4 pl-12 text-gray-400 hidden group-hover:block">
+              Browse collections, ensure you have enough cryptocurrency in your
+              wallet, and click the "Buy Now" or place a bid. Once confirmed,
+              the NFT will be transferred to your wallet.
+            </div>
+          </div>
+
+          <!-- FAQ Item 2 -->
+          <div
+            class="group bg-gray-800/30 backdrop-blur-sm rounded-2xl p-6 hover:bg-gray-800/50 transition-all duration-300"
+          >
+            <button class="w-full flex items-start justify-between gap-4">
+              <div class="flex gap-4">
+                <span
+                  class="flex-shrink-0 w-8 h-8 bg-purple-500/20 rounded-lg flex items-center justify-center"
+                >
+                  <i class="fas fa-money-bill-wave text-purple-400"></i>
+                </span>
+                <h3 class="text-left text-lg font-semibold text-white">
+                  What cryptocurrencies can I use?
+                </h3>
+              </div>
+              <span
+                class="flex-shrink-0 text-gray-400 group-hover:text-white transition-colors"
+              >
+                <i class="fas fa-chevron-down"></i>
+              </span>
+            </button>
+            <div class="mt-4 pl-12 text-gray-400 hidden group-hover:block">
+              Most NFTs are purchased with ETH (Ethereum), but some marketplaces
+              also accept other cryptocurrencies like WETH, SOL, or
+              platform-specific tokens.
+            </div>
+          </div>
+
+          <!-- FAQ Item 3 -->
+          <div
+            class="group bg-gray-800/30 backdrop-blur-sm rounded-2xl p-6 hover:bg-gray-800/50 transition-all duration-300"
+          >
+            <button class="w-full flex items-start justify-between gap-4">
+              <div class="flex gap-4">
+                <span
+                  class="flex-shrink-0 w-8 h-8 bg-purple-500/20 rounded-lg flex items-center justify-center"
+                >
+                  <i class="fas fa-gavel text-purple-400"></i>
+                </span>
+                <h3 class="text-left text-lg font-semibold text-white">
+                  How do auctions work?
+                </h3>
+              </div>
+              <span
+                class="flex-shrink-0 text-gray-400 group-hover:text-white transition-colors"
+              >
+                <i class="fas fa-chevron-down"></i>
+              </span>
+            </button>
+            <div class="mt-4 pl-12 text-gray-400 hidden group-hover:block">
+              Place a bid on an NFT auction. If you're the highest bidder when
+              the auction ends, the NFT will be transferred to your wallet after
+              payment.
+            </div>
+          </div>
+
+          <!-- FAQ Item 4 -->
+          <div
+            class="group bg-gray-800/30 backdrop-blur-sm rounded-2xl p-6 hover:bg-gray-800/50 transition-all duration-300"
+          >
+            <button class="w-full flex items-start justify-between gap-4">
+              <div class="flex gap-4">
+                <span
+                  class="flex-shrink-0 w-8 h-8 bg-purple-500/20 rounded-lg flex items-center justify-center"
+                >
+                  <i class="fas fa-user-shield text-purple-400"></i>
+                </span>
+                <h3 class="text-left text-lg font-semibold text-white">
+                  How can I verify authenticity?
+                </h3>
+              </div>
+              <span
+                class="flex-shrink-0 text-gray-400 group-hover:text-white transition-colors"
+              >
+                <i class="fas fa-chevron-down"></i>
+              </span>
+            </button>
+            <div class="mt-4 pl-12 text-gray-400 hidden group-hover:block">
+              Check the NFT's smart contract address, verify the creator's
+              wallet, and review the transaction history on the blockchain to
+              ensure authenticity.
+            </div>
+          </div>
+        </div>
+
+        <!-- Selling Section -->
+        <div
+          class="grid grid-cols-1 md:grid-cols-2 gap-8 hidden"
+          id="selling-section"
+        >
+          <!-- FAQ Item 1 -->
+          <div
+            class="group bg-gray-800/30 backdrop-blur-sm rounded-2xl p-6 hover:bg-gray-800/50 transition-all duration-300"
+          >
+            <button class="w-full flex items-start justify-between gap-4">
+              <div class="flex gap-4">
+                <span
+                  class="flex-shrink-0 w-8 h-8 bg-purple-500/20 rounded-lg flex items-center justify-center"
+                >
+                  <i class="fas fa-tag text-purple-400"></i>
+                </span>
+                <h3 class="text-left text-lg font-semibold text-white">
+                  How do I list my NFT?
+                </h3>
+              </div>
+              <span
+                class="flex-shrink-0 text-gray-400 group-hover:text-white transition-colors"
+              >
+                <i class="fas fa-chevron-down"></i>
+              </span>
+            </button>
+            <div class="mt-4 pl-12 text-gray-400 hidden group-hover:block">
+              Connect your wallet, select the NFT you want to sell, set a price
+              or auction parameters, and confirm the listing. You'll need to
+              approve the marketplace contract first.
+            </div>
+          </div>
+
+          <!-- FAQ Item 2 -->
+          <div
+            class="group bg-gray-800/30 backdrop-blur-sm rounded-2xl p-6 hover:bg-gray-800/50 transition-all duration-300"
+          >
+            <button class="w-full flex items-start justify-between gap-4">
+              <div class="flex gap-4">
+                <span
+                  class="flex-shrink-0 w-8 h-8 bg-purple-500/20 rounded-lg flex items-center justify-center"
+                >
+                  <i class="fas fa-percentage text-purple-400"></i>
+                </span>
+                <h3 class="text-left text-lg font-semibold text-white">
+                  What are royalties?
+                </h3>
+              </div>
+              <span
+                class="flex-shrink-0 text-gray-400 group-hover:text-white transition-colors"
+              >
+                <i class="fas fa-chevron-down"></i>
+              </span>
+            </button>
+            <div class="mt-4 pl-12 text-gray-400 hidden group-hover:block">
+              Royalties are fees paid to the original creator whenever their NFT
+              is resold on the secondary market, typically ranging from 5-10% of
+              the sale price.
+            </div>
+          </div>
+
+          <!-- FAQ Item 3 -->
+          <div
+            class="group bg-gray-800/30 backdrop-blur-sm rounded-2xl p-6 hover:bg-gray-800/50 transition-all duration-300"
+          >
+            <button class="w-full flex items-start justify-between gap-4">
+              <div class="flex gap-4">
+                <span
+                  class="flex-shrink-0 w-8 h-8 bg-purple-500/20 rounded-lg flex items-center justify-center"
+                >
+                  <i class="fas fa-clock text-purple-400"></i>
+                </span>
+                <h3 class="text-left text-lg font-semibold text-white">
+                  How long can I list for?
+                </h3>
+              </div>
+              <span
+                class="flex-shrink-0 text-gray-400 group-hover:text-white transition-colors"
+              >
+                <i class="fas fa-chevron-down"></i>
+              </span>
+            </button>
+            <div class="mt-4 pl-12 text-gray-400 hidden group-hover:block">
+              You can choose to list your NFT for a fixed time period or keep it
+              listed until you decide to delist it. Auction durations typically
+              range from 1-7 days.
+            </div>
+          </div>
+
+          <!-- FAQ Item 4 -->
+          <div
+            class="group bg-gray-800/30 backdrop-blur-sm rounded-2xl p-6 hover:bg-gray-800/50 transition-all duration-300"
+          >
+            <button class="w-full flex items-start justify-between gap-4">
+              <div class="flex gap-4">
+                <span
+                  class="flex-shrink-0 w-8 h-8 bg-purple-500/20 rounded-lg flex items-center justify-center"
+                >
+                  <i class="fas fa-chart-line text-purple-400"></i>
+                </span>
+                <h3 class="text-left text-lg font-semibold text-white">
+                  How do I price my NFT?
+                </h3>
+              </div>
+              <span
+                class="flex-shrink-0 text-gray-400 group-hover:text-white transition-colors"
+              >
+                <i class="fas fa-chevron-down"></i>
+              </span>
+            </button>
+            <div class="mt-4 pl-12 text-gray-400 hidden group-hover:block">
+              Research similar NFTs in your collection or category, consider the
+              current market conditions, and set a competitive price. You can
+              also start with an auction to let the market decide.
+            </div>
+          </div>
+        </div>
+
+        <!-- Creating Section -->
+        <div
+          class="grid grid-cols-1 md:grid-cols-2 gap-8 hidden"
+          id="creating-section"
+        >
+          <!-- FAQ Item 1 -->
+          <div
+            class="group bg-gray-800/30 backdrop-blur-sm rounded-2xl p-6 hover:bg-gray-800/50 transition-all duration-300"
+          >
+            <button class="w-full flex items-start justify-between gap-4">
+              <div class="flex gap-4">
+                <span
+                  class="flex-shrink-0 w-8 h-8 bg-purple-500/20 rounded-lg flex items-center justify-center"
+                >
+                  <i class="fas fa-paint-brush text-purple-400"></i>
+                </span>
+                <h3 class="text-left text-lg font-semibold text-white">
+                  How do I create an NFT?
+                </h3>
+              </div>
+              <span
+                class="flex-shrink-0 text-gray-400 group-hover:text-white transition-colors"
+              >
+                <i class="fas fa-chevron-down"></i>
+              </span>
+            </button>
+            <div class="mt-4 pl-12 text-gray-400 hidden group-hover:block">
+              Create your digital artwork, choose a marketplace, upload your
+              file, fill in metadata (title, description, properties), and mint
+              it on the blockchain.
+            </div>
+          </div>
+
+          <!-- FAQ Item 2 -->
+          <div
+            class="group bg-gray-800/30 backdrop-blur-sm rounded-2xl p-6 hover:bg-gray-800/50 transition-all duration-300"
+          >
+            <button class="w-full flex items-start justify-between gap-4">
+              <div class="flex gap-4">
+                <span
+                  class="flex-shrink-0 w-8 h-8 bg-purple-500/20 rounded-lg flex items-center justify-center"
+                >
+                  <i class="fas fa-file-code text-purple-400"></i>
+                </span>
+                <h3 class="text-left text-lg font-semibold text-white">
+                  What file types are supported?
+                </h3>
+              </div>
+              <span
+                class="flex-shrink-0 text-gray-400 group-hover:text-white transition-colors"
+              >
+                <i class="fas fa-chevron-down"></i>
+              </span>
+            </button>
+            <div class="mt-4 pl-12 text-gray-400 hidden group-hover:block">
+              Most marketplaces support common file types including JPG, PNG,
+              GIF, SVG, MP4, WEBM, MP3, WAV, OGG, GLB, and GLTF. Maximum file
+              sizes vary by platform.
+            </div>
+          </div>
+
+          <!-- FAQ Item 4 -->
+          <div
+            class="group bg-gray-800/30 backdrop-blur-sm rounded-2xl p-6 hover:bg-gray-800/50 transition-all duration-300"
+          >
+            <button class="w-full flex items-start justify-between gap-4">
+              <div class="flex gap-4">
+                <span
+                  class="flex-shrink-0 w-8 h-8 bg-purple-500/20 rounded-lg flex items-center justify-center"
+                >
+                  <i class="fas fa-cogs text-purple-400"></i>
+                </span>
+                <h3 class="text-left text-lg font-semibold text-white">
+                  What are smart contracts?
+                </h3>
+              </div>
+              <span
+                class="flex-shrink-0 text-gray-400 group-hover:text-white transition-colors"
+              >
+                <i class="fas fa-chevron-down"></i>
+              </span>
+            </button>
+            <div class="mt-4 pl-12 text-gray-400 hidden group-hover:block">
+              Smart contracts are programs stored on the blockchain that run
+              when predetermined conditions are met. They control the minting,
+              trading, and royalties of your NFTs.
+            </div>
+          </div>
+        </div>
+
+        <!-- Still Have Questions -->
+        <div class="mt-16 text-center">
+          <div
+            class="inline-block bg-gray-800/50 backdrop-blur-sm rounded-2xl p-8"
+          >
+            <div class="flex flex-col items-center">
+              <div
+                class="w-16 h-16 bg-purple-500/20 rounded-full flex items-center justify-center mb-4"
+              >
+                <i class="fas fa-headset text-3xl text-purple-400"></i>
+              </div>
+              <h3 class="text-xl font-bold text-white mb-2">
+                Still have questions?
+              </h3>
+              <p class="text-gray-400 mb-6">
+                Can't find the answer you're looking for? Our team is here to
+                help.
+              </p>
+              <button
+                id="openQuestionModalButton"
+                class="px-8 py-3 bg-gradient-to-r from-purple-600 to-pink-600 rounded-xl text-white font-medium hover:shadow-lg hover:shadow-purple-500/25 transition-all duration-300 hover:-translate-y-1"
+              >
+                Contact Support
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Question Modal Overlay -->
+        <div
+          id="questionModalOverlay"
+          class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center backdrop-blur-xl z-50"
+        >
+          <!-- Modal Container -->
+          <div
+            class="bg-gray-800 rounded-lg shadow-lg w-11/12 md:w-1/2 lg:w-1/3 p-6"
+          >
+            <!-- Modal Header -->
+            <div class="flex justify-between items-center mb-4">
+              <h2 class="text-2xl font-bold text-gray-200">Ask a Question</h2>
+              <button
+                id="closeQuestionModalButton"
+                class="text-gray-400 hover:text-gray-300 hover:bg-gray-700 rounded-full"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-6 w-6"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M6 18L18 6M6 6l12 12"
+                  />
+                </svg>
+              </button>
+            </div>
+
+            <!-- Modal Body -->
+            <div class="space-y-4">
+              <!-- Recipient Email -->
+              <div class="flex items-center space-x-4">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-6 w-6 text-blue-600"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+                  />
+                </svg>
+                <p class="text-gray-400">support@tokenated.com</p>
+              </div>
+
+              <!-- Question Input -->
+              <div>
+                <label
+                  for="question"
+                  class="block text-sm font-medium text-gray-400"
+                  >Your Email Address</label
+                >
+                <input
+                  type="email"
+                  class="text-gray-200 p-2 bg-gray-700 my-2 rounded-lg w-full"
+                  placeholder="example@email.com"
+                />
+                <label
+                  for="question"
+                  class="block text-sm font-medium text-gray-400"
+                  >Your Question</label
+                >
+                <textarea
+                  id="question"
+                  rows="4"
+                  class="mt-1 block w-full p-2 border border-gray-600 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500 bg-gray-700 text-gray-200"
+                  placeholder="Type your question here..."
+                ></textarea>
+              </div>
+            </div>
+
+            <!-- Modal Footer -->
+            <div class="mt-6 flex justify-end space-x-4">
+              <button
+                id="cancelQuestionModalButton"
+                class="bg-gray-600 text-gray-200 px-4 py-2 rounded-lg hover:bg-gray-400 transition duration-300"
+              >
+                Cancel
+              </button>
+              <button
+                id="sendQuestionButton"
+                class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition duration-300"
+              >
+                Send
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <section class="footer"></section>
+    <!-- styling -->
+
+    <style>
+      html,
+      body {
+        scroll-behavior: smooth;
+      }
+
+      #slider {
+        scroll-snap-type: x mandatory;
+      }
+
+      /* .car-item {
+        scroll-snap-align: start;
+      } */
+    </style>
+
+    <script>
+      //remove search indicator on search
+      const searchInput = document.getElementById("searchInput");
+      const slashIndicator = document.getElementById("slashIndicator");
+
+      searchInput.addEventListener("input", () => {
+        slashIndicator.style.display =
+          searchInput.value.trim() === "" ? "inline-block" : "none";
+      });
+      <!-- Simple JavaScript to handle tab switching -->
+
+      document.addEventListener("DOMContentLoaded", function () {
+        const buttons = document.querySelectorAll(
+          ".flex.flex-wrap.justify-center button"
+        );
+        const sections = {
+          General: document.getElementById("general-section"),
+          Buying: document.getElementById("buying-section"),
+          Selling: document.getElementById("selling-section"),
+          Creating: document.getElementById("creating-section"),
+        };
+
+        buttons.forEach((button) => {
+          button.addEventListener("click", () => {
+            // Update button styles
+            buttons.forEach((b) => {
+              b.classList.remove("bg-purple-600", "text-white");
+              b.classList.add("bg-gray-800/50", "text-gray-300");
+            });
+            button.classList.remove("bg-gray-800/50", "text-gray-300");
+            button.classList.add("bg-purple-600", "text-white");
+
+            // Show/hide sections
+            const category = button.textContent.trim();
+            Object.entries(sections).forEach(([key, section]) => {
+              section.classList.toggle("hidden", key !== category);
+            });
+          });
+        });
+      });
+    </script>
+    <script>
+      // Get dropdown elements
+      const imprintsToggle = document.getElementById("imprintsToggle");
+      const imprintsContent = document.getElementById("imprintsContent");
+      const imprintsArrow = document.getElementById("imprintsArrow");
+
+      const requestToggle = document.getElementById("requestToggle");
+      const requestContent = document.getElementById("requestContent");
+      const requestArrow = document.getElementById("requestArrow");
+
+      const closeModal = document.getElementById("closeModal");
+      const welcomeSection = closeModal.closest(".bg-gray-800");
+
+      // Toggle Imprints dropdown with animation
+      imprintsToggle.addEventListener("click", () => {
+        if (imprintsContent.classList.contains("hidden")) {
+          imprintsContent.classList.remove("hidden");
+          imprintsContent.classList.add("dropdown-expand");
+          imprintsArrow.classList.add("rotate-180");
+
+          // Scroll to make the dropdown visible if needed
+          setTimeout(() => {
+            imprintsContent.scrollIntoView({
+              behavior: "smooth",
+              block: "nearest",
+            });
+          }, 100);
+        } else {
+          imprintsContent.classList.add("hidden");
+          imprintsContent.classList.remove("dropdown-expand");
+          imprintsArrow.classList.remove("rotate-180");
+        }
+      });
+
+      // Toggle Request dropdown with animation
+      requestToggle.addEventListener("click", () => {
+        if (requestContent.classList.contains("hidden")) {
+          requestContent.classList.remove("hidden");
+          requestContent.classList.add("dropdown-expand");
+          requestArrow.classList.add("rotate-180");
+
+          // Scroll to make the dropdown visible if needed
+          setTimeout(() => {
+            requestContent.scrollIntoView({
+              behavior: "smooth",
+              block: "nearest",
+            });
+          }, 100);
+        } else {
+          requestContent.classList.add("hidden");
+          requestContent.classList.remove("dropdown-expand");
+          requestArrow.classList.remove("rotate-180");
+        }
+      });
+
+      // Close welcome section
+      closeModal.addEventListener("click", () => {
+        welcomeSection.classList.add("hidden");
+      });
+    </script>
+    
+    <!-- slider script -->
+    <script>
+
+    //   document.addEventListener('DOMContentLoaded', () => {
+    //     setTimeout(() => {
+    //     const swiper = new Swiper('.swiper', {
+    //       loop: true, // Infinite loop
+    //       autoplay: {
+    //           delay: 3000, // Auto-slide every 3 seconds
+    //           disableOnInteraction: false, // Keep autoplay even after user interaction
+    //       },
+    //       navigation: {
+    //           nextEl: '.swiper-button-next',
+    //           prevEl: '.swiper-button-prev',
+    //       },
+    //       pagination: {
+    //           el: '.swiper-pagination',
+    //           clickable: true,
+    //       },
+    //   });
+    // }, 4000); // Delay by 500ms (adjust if needed)
+    //  });
+     
+
+    document.addEventListener('DOMContentLoaded', () => {
+    const targetNode = document.querySelector('.swiper-wrapper');
+
+    const observer = new MutationObserver(() => {
+        observer.disconnect(); // Stop watching once content is loaded
+
+        const swiper = new Swiper('.swiper', {
+            loop: true,
+            autoplay: {
+                delay: 5000,
+                disableOnInteraction: false,
+                pauseOnMouseEnter: true,
+            },
+            navigation: {
+                nextEl: '.cus-swiper-button-next',
+                prevEl: '.cus-swiper-button-prev',
+            },
+            pagination: {
+                el: '.swiper-pagination',
+                clickable: true,
+            },
+        });
+    });
+
+    observer.observe(targetNode, { childList: true });
+});
+
+
+console.log("blsre",slider); // Should not be undefined
+const gradChange = document.querySelector('#background');
+const slides = document.querySelectorAll('.slide');
+
+function getRandomColor() {
+    return `#${Math.floor(Math.random() * 16777215).toString(16)}`;
+}
+
+function updateOverlay() {
+    const randomColor = getRandomColor();
+    gradChange.style.transition = 'background 1s ease';
+    gradChange.style.background = `linear-gradient(to bottom, ${randomColor}, transparent)`;
+}
+
+    // Ensure slider is initialized before attaching events
+    const slider = new Swiper('.swiper-container', {
+        on: {
+            slideChange: updateOverlay
+        }
+    });
+
+// Initial call to set overlay color
+updateOverlay();
+
+
+     </script>
+     <script src="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.js"></script>
+    <script type="module" src="./assets/js/articlehandler.js"></script>
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <script src="./assets/js/index.js"></script>
+    <script src="./assets/js/welcomeModal.js"></script>
+    <script type="module" src="./assets/js/search.js"></script>
+    <script type="module" src="./assets/js/mobileSearch.js"></script>
+    <script src="./assets/js/redirect.js"></script>
+    <script type="module" src="./assets/js/nftTransactionHandler.js"></script>
+    <script type="module" src="./assets/js/script.js"></script>
+    <!-- <script src="./assets/js/app.js"></script> -->
+    <script src="./assets/js/auth.js" type="module"></script>
+    <!-- <script src="./main/main.js"></script> -->
+    <script src="assets/js/support.js"></script>
+  </body>
+</html>
+  

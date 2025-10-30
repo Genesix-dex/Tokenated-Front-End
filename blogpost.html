@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tokenated - NFT Marketplace</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+    <link
+      rel="shortcut icon"
+      href="assets/svg icons/darkLogo.svg"
+      type="image/x-icon"
+    />
+    <style>
+      @keyframes shimmer {
+        0% {
+          opacity: 1;
+        }
+        50% {
+          opacity: 0.5;
+        }
+        100% {
+          opacity: 1;
+        }
+      }
+      .animate-shimmer {
+        animation: shimmer 1.5s infinite;
+      }
+      html,
+      body {
+        scroll-behavior: smooth;
+      }
+      #slider {
+        scroll-snap-type: x mandatory;
+      }
+      .car-item {
+        scroll-snap-align: start;
+      }
+    </style>
+  </head>
+  <body class="bg-gray-900 text-white">
+    <!-- Navigation -->
+    <nav
+      class="fixed w-full z-50 backdrop-blur-lg top-0 bg-gray-900/70 border-b border-gray-800/50"
+    >
+      <!-- <div class="max-w-7xl mx-auto px-2 sm:px-6 lg:px-0"> -->
+      <div class="w-[95%] mx-auto px-4 sm:px-6 lg:px-0">
+        <div class="flex items-center justify-between h-20">
+          <!-- Logo Section -->
+          <div class="flex items-center space-x-8">
+            <div class="flex-shrink-0">
+                <a href="index.html" class="flex items-center space-x-2 group">
+                    <div class="w-10 h-10 bg-gradient-to-tr from-purple-600 to-pink-600 rounded-lg flex items-center justify-center transform group-hover:rotate-12 transition-transform duration-300">
+                        <img src="assets/svg icons/darkLogo.svg" alt="Logo">
+                    </div>
+                    <span class="text-2xl font-bold bg-gradient-to-r from-purple-400 to-pink-500 text-transparent bg-clip-text">Tokenated</span>
+                </a>
+            </div>
+
+            <div class="hidden lg:flex items-center space-x-4">
+              <!-- Search Bar -->
+              <div class="relative">
+                <input
+                  type="search"
+                  id="searchInput"
+                  class="bg-gray-800/40 rounded-2xl pl-10 pr-10 py-2 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500 w-[300px]"
+                  placeholder="Search"
+                />
+                <span
+                  class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="h-5 w-5"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                    />
+                  </svg>
+                </span>
+                <!-- Slash Indicator -->
+                <span
+                  id="slashIndicator"
+                  class="absolute right-3 top-1/2 -translate-y-1/2 bg-gray-700 text-gray-400 text-sm px-2 py-1 rounded-full hidden sm:inline-block my-auto"
+                >
+                  /
+                </span>
+              </div>
+            </div>
+
+            <!-- Desktop Navigation Links -->
+            <div class="hidden md:flex items-center space-x-1">
+              <a
+                href="marketplace.html"
+                class="relative px-4 py-2 text-gray-300 hover:text-white transition-colors duration-300 group"
+              >
+                <span>Marketplace</span>
+                <span
+                  class="absolute inset-x-0 bottom-0 h-0.5 bg-gradient-to-r from-purple-400 to-pink-500 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"
+                ></span>
+              </a>
+              <a
+                href="topcollections.html"
+                class="relative px-4 py-2 text-gray-300 hover:text-white transition-colors duration-300 group"
+              >
+                <span>NFTs</span>
+                <span
+                  class="absolute inset-x-0 bottom-0 h-0.5 bg-gradient-to-r from-purple-400 to-pink-500 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"
+                ></span>
+              </a>
+              <a
+                href="create.html"
+                class="relative px-4 py-2 text-gray-300 hover:text-white transition-colors duration-300 group"
+              >
+                <span>Create</span>
+                <span
+                  class="absolute inset-x-0 bottom-0 h-0.5 bg-gradient-to-r from-purple-400 to-pink-500 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"
+                ></span>
+              </a>
+            </div>
+          </div>
+
+          <!-- Right Side Actions -->
+          <div class="flex items-center space-x-6">
+            <!-- Search Button -->
+            <button
+              id="searchIcon"
+              class="md:hidden p-2 text-gray-400 hover:text-white transition-colors duration-300"
+            >
+              <svg
+                id="opensearch"
+                class="w-6 h-6 block"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                />
+              </svg>
+              <svg
+                id="closesearch"
+                class="hidden"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+                stroke="currentColor"
+                x="0px"
+                y="0px"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  d="M11 0.7H13V23.3H11z"
+                  transform="rotate(-45.001 12 12)"
+                ></path>
+                <path
+                  d="M0.7 11H23.3V13H0.7z"
+                  transform="rotate(-45.001 12 12)"
+                ></path>
+              </svg>
+            </button>
+
+            <a
+              href="#"
+              id="signupButton"
+              class="hidden relative px-4 py-2 text-gray-300 hover:text-white transition-colors duration-300 group"
+            >
+              <span>sign up</span>
+              <span
+                class="absolute inset-x-0 bottom-0 h-0.5 bg-gradient-to-r from-purple-400 to-pink-500 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"
+              ></span>
+            </a>
+
+            <!-- Connect Wallet Button -->
+            <button
+            class="hidden md:flex group relative px-1 py-1 overflow-hidden rounded-3xl bg-purple-500/10 text-white font-medium shadow-lg transition-all duration-300 hover:shadow-purple-500/25 hover:shadow-xl connect-wallet-btn"
+          >
+            <div class="relative z-10 flex items-center space-x-2">
+              <svg
+                class="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"
+                />
+              </svg>
+              <span>Connect Wallet</span>
+            </div>
+          </button>
+
+            <div class="relative group hidden" id="bode">
+              <!-- Avatar Circle -->
+              <div
+                class="w-10 h-10 bg-gray-300 rounded-full overflow-hidden flex items-center justify-center"
+              >
+                <!-- Placeholder for Image -->
+                <img
+                  src="https://via.placeholder.com/48"
+                  alt="Profile"
+                  class="w-full h-full object-cover"
+                />
+              </div>
+
+              <!-- Hover Options -->
+              <div
+                id="men"
+                class="absolute top-10 left-1/2 -translate-x-1/2 bg-white shadow-lg rounded-lg p-2 min-w-[100px] hidden group-hover:block"
+              >
+                <button
+                  class="block w-full text-sm text-gray-700 hover:text-white hover:bg-purple-600 px-4 py-2 rounded-lg transition"
+                >
+                  Log in
+                </button>
+                <button
+                  class="block w-full text-sm text-gray-700 hover:text-white hover:bg-purple-600 px-4 py-2 rounded-lg transition"
+                >
+                  Sign up
+                </button>
+              </div>
+            </div>
+
+            <!-- Mobile Menu Button -->
+            <button
+              id="mobileMenuButton"
+              class="md:hidden p-2 text-gray-400 hover:text-white transition-colors duration-300"
+            >
+              <svg
+                id="menuIcon"
+                class="w-6 h-6"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M4 6h16M4 12h16m-7 6h7"
+                />
+              </svg>
+              <svg
+                id="closeIcon"
+                class="hidden w-6 h-6"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M6 18L18 6M6 6l12 12"
+                />
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Mobile Menu -->
+      <div id="mobileMenu" class="md:hidden hidden">
+        <div
+          class="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-gray-900/90 backdrop-blur-lg"
+        >
+          <a
+            href="marketplace.html"
+            class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-800 transition-all duration-300"
+            >Marketplace</a
+          >
+          <a
+            href="topcollections.html"
+            class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-800 transition-all duration-300"
+            >NFTs</a
+          >
+          <a
+            href="create.html"
+            class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-800 transition-all duration-300"
+            >Create</a
+          >
+          <button
+            id="mobileConnectButton"
+            class="w-full mt-4 px-3 py-2 bg-gradient-to-r from-purple-600 to-pink-600 rounded-md text-white font-medium hover:from-purple-700 hover:to-pink-700 transition-colors connect-wallet-btn"
+          >
+            Connect Wallet
+          </button>
+        </div>
+      </div>
+    </nav>
+    <div
+      class="lg:hidden fixed w-full z-30 backdrop-blur-lg top-[80px] left-[50%] -translate-x-[50%] bg-gray-900/70 border-b border-gray-800/50 rounded-2xl"
+    >
+      <div id="searchbar" class="items-center space-x-4 hidden">
+        <!-- Search Bar -->
+        <div class="relative">
+          <input
+            type="search"
+            id="searchInput"
+            class="bg-gray-800/40 rounded-2xl pl-10 pr-10 py-2 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500 w-full"
+            placeholder="Search"
+          />
+          <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-5 w-5"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+              />
+            </svg>
+          </span>
+          <!-- Slash Indicator -->
+          <span
+            id="slashIndicator"
+            class="absolute right-3 top-1/2 -translate-y-1/2 bg-gray-700 text-gray-400 text-sm px-2 py-1 rounded-full hidden sm:inline-block my-auto"
+          >
+            /
+          </span>
+        </div>
+      </div>
+    </div>
+
+
+    <div id="overlay" class="fixed inset-0 z-50 bg-gray-800 bg-opacity-50 flex items-center justify-center hidden">
+        <div class="bg-gray-900 w-96 p-6 rounded-md shadow-lg relative">
+            <!-- Close Button -->
+            <button id="closeButton"
+                class="absolute top-3 right-3 text-gray-400 hover:text-gray-600 focus:outline-none text-xl font-bold">
+                &times;
+            </button>
+
+            <!-- Overlay Content -->
+            <h2 class="text-xl font-semibold text-gray-200 mb-6">Connect Wallet</h2>
+
+            <!-- Wallet Options -->
+            <div class="space-y-4">
+                <button
+                    class="w-full flex items-center justify-center border border-gray-300 rounded-md px-4 py-3 text-gray-200 bg-gray-500 hover:bg-gray-400 focus:outline-none"><img
+                        src="metamask.svg" alt="" class="mr-2">
+                    MetaMask
+                </button>
+                <button
+                    class="w-full flex items-center justify-center border border-gray-300 rounded-md px-4 py-3 text-gray-200 bg-gray-500 hover:bg-gray-400 focus:outline-none"><img
+                        src="WalletConnect-icon.svg" alt="" class="mr-2">
+                    WalletConnect
+                </button>
+                <button
+                    class="w-full flex items-center justify-center border border-gray-300 rounded-md px-4 py-3 text-gray-200 bg-gray-500 hover:bg-gray-400 focus:outline-none">
+                    <div class="flex -space-x-2 mr-2">
+                        <img src="WalletConnect-icon.svg" alt="" class="w-6 h-6 rounded-full border-1 border-gray-800">
+                        <img src="metamask.svg" alt="" class="w-6 h-6 rounded-full border-1 border-gray-800">
+                    </div>
+                    Other Wallets
+                </button>
+            </div>
+
+            <!-- Divider -->
+            <div class="flex items-center my-6">
+                <hr class="w-full border-gray-300" />
+                <span class="mx-2 text-gray-400">or</span>
+                <hr class="w-full border-gray-300" />
+            </div>
+
+            <form action="" class="flex flex-col gap-2">
+                <h1 class="text-xl font-semibold text-gray-200 mb-3">Sign up / Sign in</h1>
+                <input type="email" name="email" id="email" placeholder="E-mail"
+                    class="w-full flex items-center justify-center border border-xl border-gray-300 rounded-md px-4 py-3 text-gray-700 hover:bg-gray-100 focus:outline-none">
+                <input type="password" name="passcode" id="passcode" placeholder="password"
+                    class="w-full flex items-center justify-center border border-xl border-gray-300 rounded-md px-4 py-3 text-gray-700 hover:bg-gray-100 focus:outline-none">
+                <input type="submit" name="submit" id="submit" value="submit"
+                    class="bg-purple-500 hover:bg-purple-600 w-full flex items-center justify-center border border-xl border-gray-300 rounded-md px-4 py-3 text-gray-200 hover:bg-gray-100 focus:outline-none">
+            </form>
+
+            <!-- Divider -->
+            <div class="flex items-center my-6">
+                <hr class="w-full border-gray-300" />
+                <span class="mx-2 text-gray-400">or</span>
+                <hr class="w-full border-gray-300" />
+            </div>
+
+            <!-- Continue with Google -->
+            <button
+                class="w-full flex items-center justify-center bg-blue-500 text-white rounded-md px-4 py-3 hover:bg-blue-600 focus:outline-none">
+                Continue with Google
+            </button>
+
+            <!-- Link -->
+            <p class="mt-4 text-center text-gray-200 text-sm">
+                Don’t have a wallet?
+                <a href="#" class="text-blue-500 hover:underline">Learn more</a>
+            </p>
+        </div>
+    </div>
+
+
+  <div class="bg-gray-900 pt-28 pb-12">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <!-- Hero Section -->
+          <div class="relative rounded-2xl overflow-hidden mb-16 bg-gradient-to-r from-purple-900 to-pink-900">
+              <div class="absolute inset-0">
+                  <div class="absolute inset-0 bg-gradient-to-r from-purple-600/20 to-pink-600/20 backdrop-blur-sm"></div>
+                  <div class="absolute inset-0 bg-gradient-to-b from-transparent to-gray-900"></div>
+              </div>
+              <div class="relative px-8 py-16 sm:px-12 sm:py-24">
+                  <h1 class="text-4xl md:text-6xl font-bold text-white mb-6">
+                      Discover the Latest in
+                      <span class="block text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-400">
+                          Web3 & NFTs
+                      </span>
+                  </h1>
+                  <p class="text-xl text-gray-300 max-w-2xl mb-8">
+                      Stay updated with the latest trends, insights, and innovations in the world of blockchain technology and digital collectibles.
+                  </p>
+                  <div class="flex flex-wrap gap-4">
+                      <button class="px-6 py-3 bg-white/10 backdrop-blur-sm rounded-xl text-white hover:bg-white/20 transition-all duration-300">
+                          Latest Updates
+                      </button>
+                      <button class="px-6 py-3 bg-gradient-to-r from-purple-600 to-pink-600 rounded-xl text-white hover:shadow-lg hover:shadow-purple-500/25 transition-all duration-300">
+                          Subscribe to Newsletter
+                      </button>
+                  </div>
+              </div>
+          </div>
+
+          <!-- Featured Articles -->
+          <div class="mb-16">
+              <div class="flex justify-between items-center mb-8">
+                  <h2 class="text-3xl font-bold text-white">Featured Stories</h2>
+                  <div class="flex space-x-2">
+                      <button class="p-2 rounded-lg bg-gray-800/50 text-gray-400 hover:text-white transition-colors">
+                          <i class="fas fa-chevron-left"></i>
+                      </button>
+                      <button class="p-2 rounded-lg bg-gray-800/50 text-gray-400 hover:text-white transition-colors">
+                          <i class="fas fa-chevron-right"></i>
+                      </button>
+                  </div>
+              </div>
+
+              <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                  <a href="newsdetails.html" class="group relative bg-gray-800/50 rounded-2xl overflow-hidden backdrop-blur-sm hover:shadow-2xl hover:shadow-purple-500/10 transition-all duration-300">
+                      <div class="aspect-video">
+                          <img src="https://images.unsplash.com/photo-1639762681485-074b7f938ba0" alt="NFT Article" 
+                               class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                      </div>
+                      <div class="p-6">
+                          <div class="flex items-center space-x-2 mb-4">
+                              <span class="px-3 py-1 bg-purple-500/20 text-purple-400 rounded-full text-sm">Technology</span>
+                              <span class="text-gray-400 text-sm">5 min read</span>
+                          </div>
+                          <h3 class="text-xl font-bold text-white mb-2 group-hover:text-purple-400 transition-colors">
+                              The Future of Smart Contracts: Beyond the Basics
+                          </h3>
+                          <p class="text-gray-400 mb-4">
+                              Exploring advanced concepts in smart contract development and their real-world applications.
+                          </p>
+                          <div class="flex items-center space-x-3">
+                              <img src="https://via.placeholder.com/32" alt="Author" class="w-8 h-8 rounded-full">
+                              <div>
+                                  <p class="text-sm font-medium text-white">Alex Rivers</p>
+                                  <p class="text-xs text-gray-400">Feb 12, 2024</p>
+                              </div>
+                          </div>
+                      </div>
+                  </a>
+
+                  <a href="newsdetails.html" class="group relative bg-gray-800/50 rounded-2xl overflow-hidden backdrop-blur-sm hover:shadow-2xl hover:shadow-purple-500/10 transition-all duration-300">
+                      <div class="aspect-video">
+                          <img src="https://images.unsplash.com/photo-1639762681485-074b7f938ba0" alt="NFT Article" 
+                               class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                      </div>
+                      <div class="p-6">
+                          <div class="flex items-center space-x-2 mb-4">
+                              <span class="px-3 py-1 bg-purple-500/20 text-purple-400 rounded-full text-sm">Market</span>
+                              <span class="text-gray-400 text-sm">3 min read</span>
+                          </div>
+                          <h3 class="text-xl font-bold text-white mb-2 group-hover:text-purple-400 transition-colors">
+                              NFT Market Trends: Q1 2024 Analysis
+                          </h3>
+                          <p class="text-gray-400 mb-4">
+                              A deep dive into the latest market trends and predictions for the NFT ecosystem.
+                          </p>
+                          <div class="flex items-center space-x-3">
+                              <img src="https://via.placeholder.com/32" alt="Author" class="w-8 h-8 rounded-full">
+                              <div>
+                                  <p class="text-sm font-medium text-white">Sarah Chen</p>
+                                  <p class="text-xs text-gray-400">Feb 10, 2024</p>
+                              </div>
+                          </div>
+                      </div>
+                  </a>
+
+                  <a href="newsdetails.html" class="group relative bg-gray-800/50 rounded-2xl overflow-hidden backdrop-blur-sm hover:shadow-2xl hover:shadow-purple-500/10 transition-all duration-300">
+                      <div class="aspect-video">
+                          <img src="https://images.unsplash.com/photo-1639762681485-074b7f938ba0" alt="NFT Article" 
+                               class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                      </div>
+                      <div class="p-6">
+                          <div class="flex items-center space-x-2 mb-4">
+                              <span class="px-3 py-1 bg-purple-500/20 text-purple-400 rounded-full text-sm">Tutorial</span>
+                              <span class="text-gray-400 text-sm">7 min read</span>
+                          </div>
+                          <h3 class="text-xl font-bold text-white mb-2 group-hover:text-purple-400 transition-colors">
+                              Creating Your First NFT Collection
+                          </h3>
+                          <p class="text-gray-400 mb-4">
+                              Step-by-step guide to creating and launching your own NFT collection.
+                          </p>
+                          <div class="flex items-center space-x-3">
+                              <img src="https://via.placeholder.com/32" alt="Author" class="w-8 h-8 rounded-full">
+                              <div>
+                                  <p class="text-sm font-medium text-white">Marcus Wong</p>
+                                  <p class="text-xs text-gray-400">Feb 8, 2024</p>
+                              </div>
+                          </div>
+                      </div>
+                  </a>
+              </div>
+          </div>
+
+          <!-- Latest Articles Grid -->
+          <div>
+              <div class="flex justify-between items-center mb-8">
+                  <h2 class="text-3xl font-bold text-white">Latest Articles</h2>
+                  <div class="flex items-center space-x-4">
+                      <select class="bg-gray-800/50 rounded-xl px-4 py-2 text-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500">
+                          <option>All Categories</option>
+                          <option>Technology</option>
+                          <option>Market Analysis</option>
+                          <option>Tutorials</option>
+                      </select>
+                  </div>
+              </div>
+
+              <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                  <article class="group bg-gray-800/30 rounded-2xl overflow-hidden hover:bg-gray-800/50 transition-all duration-300">
+                      <div class="aspect-video overflow-hidden">
+                          <img src="https://images.unsplash.com/photo-1639762681057-408e52192e55" alt="Article Image"
+                               class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                      </div>
+                      <div class="p-6">
+                          <div class="flex items-center justify-between mb-4">
+                              <span class="px-3 py-1 bg-gray-700/50 text-gray-300 rounded-full text-sm">NFTs</span>
+                              <span class="text-gray-400 text-sm">Feb 10, 2024</span>
+                          </div>
+                          <h3 class="text-lg font-bold text-white mb-2 group-hover:text-purple-400 transition-colors">
+                              Understanding NFT Metadata Standards
+                          </h3>
+                          <p class="text-gray-400 mb-4">
+                              A comprehensive guide to metadata standards in NFT development and best practices.
+                          </p>
+                          <div class="flex items-center justify-between">
+                              <div class="flex items-center space-x-2">
+                                  <img src="https://via.placeholder.com/24" alt="Author" class="w-6 h-6 rounded-full">
+                                  <span class="text-sm text-gray-400">By Sarah Chen</span>
+                              </div>
+                              <button class="text-purple-400 hover:text-purple-300 transition-colors">Read More →</button>
+                          </div>
+                      </div>
+                  </article>
+
+                  <!-- Repeat similar cards with different content -->
+              </div>
+
+              <!-- Load More Button -->
+              <div class="text-center mt-12">
+                  <button class="group px-8 py-3 bg-gray-800/50 rounded-xl text-gray-300 hover:bg-gray-800 transition-all duration-300">
+                      <span class="flex items-center space-x-2">
+                          <span>Load More Articles</span>
+                          <i class="fas fa-arrow-down group-hover:translate-y-1 transition-transform"></i>
+                      </span>
+                  </button>
+              </div>
+          </div>
+
+          <!-- Newsletter Section -->
+          <div class="mt-24 relative">
+              <div class="absolute inset-0 bg-gradient-to-r from-purple-600/20 to-pink-600/20 rounded-2xl blur-3xl"></div>
+              <div class="relative bg-gray-800/50 backdrop-blur-sm rounded-2xl p-8 md:p-12">
+                  <div class="flex flex-col md:flex-row items-center justify-between gap-8">
+                      <div class="md:w-1/2">
+                          <h3 class="text-2xl md:text-3xl font-bold text-white mb-4">
+                              Stay Updated with Our Newsletter
+                          </h3>
+                          <p class="text-gray-300">
+                              Get the latest updates, tutorials, and insights delivered directly to your inbox.
+                          </p>
+                      </div>
+                      <div class="md:w-1/2">
+                          <form class="flex space-x-2">
+                              <input type="email" 
+                                     placeholder="Enter your email" 
+                                     class="flex-1 bg-gray-700/50 rounded-xl px-4 py-3 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500">
+                              <button class="px-6 py-3 bg-gradient-to-r from-purple-600 to-pink-600 rounded-xl text-white hover:shadow-lg hover:shadow-purple-500/25 transition-all duration-300">
+                                  Subscribe
+                              </button>
+                          </form>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+         <!-- Footer -->
+    <footer class="bg-gray-800/50 backdrop-blur-sm border-t border-gray-700/50">
+        <div class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+            <!-- Footer Main Content -->
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+                <!-- Brand Section -->
+                <div class="space-y-4">
+                    <div class="flex items-center space-x-2">
+                        <div class="w-10 h-10 bg-gradient-to-tr from-purple-600 to-pink-600 rounded-lg flex items-center justify-center">
+                            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                            </svg>
+                        </div>
+                        <span class="text-2xl font-bold bg-gradient-to-r from-purple-400 to-pink-500 text-transparent bg-clip-text">Tokenated</span>
+                    </div>
+                    <p class="text-gray-400 text-sm">
+                        The world's first and largest digital marketplace for crypto collectibles and NFTs.
+                    </p>
+                    <!-- Newsletter -->
+                    <div class="pt-4">
+                        <h4 class="text-white font-medium mb-2">Join Our Newsletter</h4>
+                        <div class="flex">
+                            <input type="email" 
+                                   placeholder="Enter your email" 
+                                   class="flex-1 bg-gray-700/50 rounded-l-lg px-4 py-2 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500">
+                            <button class="bg-purple-600 hover:bg-purple-700 text-white px-4 rounded-r-lg transition-colors">
+                                Subscribe
+                            </button>
+                        </div>
+                    </div>
+                </div>
+    
+                <!-- Quick Links -->
+                <div>
+                    <h3 class="text-white font-semibold mb-4">Quick Links</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Marketplace</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Rankings</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Create NFT</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Activity</a></li>
+                    </ul>
+                </div>
+    
+                <!-- Support -->
+                <div>
+                    <h3 class="text-white font-semibold mb-4">Support</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Help Center</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Terms of Service</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Privacy Policy</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Contact Us</a></li>
+                    </ul>
+                </div>
+    
+                <!-- Community -->
+                <div>
+                    <h3 class="text-white font-semibold mb-4">Join Community</h3>
+                    <div class="flex flex-wrap gap-4">
+                        <a href="#" class="bg-gray-700/50 hover:bg-gray-700 p-3 rounded-lg transition-colors">
+                            <i class="fab fa-discord text-xl text-gray-400 hover:text-white"></i>
+                        </a>
+                        <a href="#" class="bg-gray-700/50 hover:bg-gray-700 p-3 rounded-lg transition-colors">
+                            <i class="fab fa-twitter text-xl text-gray-400 hover:text-white"></i>
+                        </a>
+                        <a href="#" class="bg-gray-700/50 hover:bg-gray-700 p-3 rounded-lg transition-colors">
+                            <i class="fab fa-instagram text-xl text-gray-400 hover:text-white"></i>
+                        </a>
+                        <a href="#" class="bg-gray-700/50 hover:bg-gray-700 p-3 rounded-lg transition-colors">
+                            <i class="fab fa-telegram text-xl text-gray-400 hover:text-white"></i>
+                        </a>
+                    </div>
+                    <!-- Supported Chains -->
+                    <div class="mt-6">
+                        <h4 class="text-white font-medium mb-2">Supported Chains</h4>
+                        <div class="flex gap-3">
+                            <img src="./assets/images/eth-logo.png" alt="Ethereum" class="w-6 h-6">
+                            <img src="./assets/images/bsc-logo.png" alt="BSC" class="w-6 h-6">
+                            <img src="./assets/images/polygon-logo.png" alt="Polygon" class="w-6 h-6">
+                        </div>
+                    </div>
+                </div>
+            </div>
+    
+            <!-- Footer Bottom -->
+            <div class="border-t border-gray-700/50 pt-8 flex flex-col md:flex-row justify-between items-center">
+                <p class="text-gray-400 text-sm">
+                    © 2024 Tokenated. All rights reserved.
+                </p>
+                <div class="flex items-center space-x-4 mt-4 md:mt-0">
+                    <select class="bg-gray-700/50 rounded-lg px-3 py-1 text-sm text-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500">
+                        <option>🇺🇸 English</option>
+                        <option>🇪🇸 Spanish</option>
+                        <option>🇫🇷 French</option>
+                    </select>
+                    <div class="flex items-center space-x-2 text-gray-400">
+                        <span class="w-2 h-2 bg-green-500 rounded-full"></span>
+                        <span class="text-sm">Network: Online</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <section class="footer">
+                
+    </section>
+    <script src="./assets/js/script.js"></script>
+    <script>
+        const connectButton = document.getElementById("connectButton");
+        const closeButton = document.getElementById("closeButton");
+        const overlay = document.getElementById("overlay");
+    
+        connectButton.addEventListener("click", () => {
+          overlay.classList.remove("hidden");
+        });
+    
+        closeButton.addEventListener("click", () => {
+          overlay.classList.add("hidden");
+        });
+      </script>
+</body>
+</html>

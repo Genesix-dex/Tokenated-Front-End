@@ -1,0 +1,832 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tokenated - NFT Marketplace</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+    <link
+      rel="shortcut icon"
+      href="assets/svg icons/darkLogo.svg"
+      type="image/x-icon"
+    />
+    <style>
+      @keyframes shimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+@keyframes gradientBG {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+@keyframes borderRotate {
+  0% { filter: hue-rotate(0deg); }
+  100% { filter: hue-rotate(360deg); }
+}
+
+@keyframes glow {
+  0%, 100% { filter: brightness(1); }
+  50% { filter: brightness(1.3); }
+}
+
+html, body {
+  scroll-behavior: smooth;
+}
+
+#slider {
+  scroll-snap-type: x mandatory;
+}
+
+.car-item {
+  scroll-snap-align: start;
+}
+
+.animated-border::before {
+  content: '';
+  position: absolute;
+  inset: -5px;
+  filter: blur(10px);
+  z-index: 10;
+  animation: border-spin 8s linear infinite;
+}
+/* Keep existing animations and base styles */
+@keyframes shimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+@keyframes gradientBG {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+@keyframes borderRotate {
+  0% { filter: hue-rotate(0deg); }
+  100% { filter: hue-rotate(360deg); }
+}
+
+@keyframes glow {
+  0%, 100% { filter: brightness(1); }
+  50% { filter: brightness(1.3); }
+}
+
+.profile-container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem;
+  background: linear-gradient(
+    45deg,
+    rgba(31, 41, 55, 0.3),
+    rgba(55, 48, 163, 0.2),
+    rgba(139, 92, 246, 0.15),
+    rgba(31, 41, 55, 0.3)
+  );
+  background-size: 400% 400%;
+  animation: gradientBG 15s ease infinite;
+  border-radius: 1.5rem;
+  border: 1px solid rgba(229, 231, 235, 0.1);
+  box-shadow: 
+    0 0 40px -10px rgba(139, 92, 246, 0.3),
+    inset 0 0 60px -20px rgba(139, 92, 246, 0.2);
+  backdrop-filter: blur(10px);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* New layout structure */
+.profile-layout {
+  padding: 1rem;
+}
+
+.profile-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.profile-image-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.profile-image-wrapper {
+  position: relative;
+  display: inline-block;
+  padding: 4px;
+  background: linear-gradient(45deg, #8b5cf6, #6366f1, #8b5cf6);
+  border-radius: 1.2rem;
+  animation: borderRotate 4s linear infinite;
+}
+
+.profile-image {
+  width: 8rem;
+  height: 8rem;
+  border-radius: 1rem;
+  overflow: hidden;
+  position: relative;
+  z-index: 10;
+  transition: transform 0.3s ease;
+  background-color: rgba(31, 41, 55, 0.4);
+}
+
+.verified-badge {
+  position: absolute;
+  right: -0.5rem;
+  bottom: -0.5rem;
+  background: rgba(17, 24, 39, 0.9);
+  padding: 0.6rem;
+  border-radius: 9999px;
+  border: 2px solid #8b5cf6;
+  z-index: 20;
+  box-shadow: 0 0 20px rgba(139, 92, 246, 0.4);
+  transition: all 0.3s ease;
+}
+
+.verified-icon {
+  color: #8b5cf6;
+  animation: glow 2s ease-in-out infinite;
+}
+
+.name-container {
+  text-align: center;
+  width: 100%;
+}
+
+.profile-name {
+  font-size: 1.5rem;
+  font-weight: 700;
+  background: linear-gradient(45deg, #fff, #a5b4fc);
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin: 0;
+}
+
+.wallet-container {
+  width: 100%;
+  text-align: center;
+}
+
+.wallet-address {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  background: rgba(31, 41, 55, 0.4);
+  border-radius: 9999px;
+  font-family: monospace;
+  color: #9ca3af;
+  font-size: 0.875rem;
+}
+
+/* Bio section */
+.bio-section {
+  background: rgba(31, 41, 55, 0.3);
+  border-radius: 1rem;
+  padding: 1.5rem;
+  border: 1px solid rgba(139, 92, 246, 0.1);
+}
+
+.bio-content {
+  color: #9ca3af;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  margin-bottom: 1.5rem;
+}
+
+/* Stats grid */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.stat-card {
+  background: rgba(31, 41, 55, 0.4);
+  border-radius: 1rem;
+  padding: 1rem;
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+.stat-value {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin: 0 0 0.5rem 0;
+  background: linear-gradient(45deg, #fff, #a5b4fc);
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.stat-label {
+  font-size: 0.875rem;
+  color: #9ca3af;
+  margin: 0;
+}
+
+
+.social-links-container {
+  margin-top: 24px;
+  position: relative;
+}
+
+.social-links {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 12px;
+  max-height: 120px;
+  overflow: hidden;
+  transition: max-height 0.3s ease;
+}
+
+.social-links.expanded {
+  max-height: none;
+}
+
+.social-link {
+  display: flex;
+  align-items: center;
+  padding: 12px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  text-decoration: none;
+  color: #fff;
+  transition: background 0.2s ease;
+}
+
+.social-link:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.social-link-icon {
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 12px;
+}
+
+.social-link-icon i {
+  font-size: 20px;
+}
+
+.social-link-text {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.social-links-count {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  background: #1a1a1a;
+  border: 2px solid #2a2a2a;
+  color: #fff;
+  border-radius: 20px;
+  padding: 2px 8px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.show-more-socials {
+  display: none;
+  width: 100%;
+  padding: 12px;
+  margin-top: 12px;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.show-more-socials.visible {
+  display: block;
+}
+
+.show-more-socials:hover {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+
+
+/* Responsive breakpoints */
+@media (min-width: 768px) {
+  .profile-layout {
+    padding: 2rem;
+  }
+
+  .profile-info {
+    flex-direction: row;
+    align-items: flex-start;
+  }
+
+  .profile-image-container {
+    width: 300px;
+    flex-shrink: 0;
+  }
+
+  .bio-section {
+    flex: 1;
+    margin-left: 2rem;
+  }
+
+  .profile-image {
+    width: 12rem;
+    height: 12rem;
+  }
+
+  .profile-name {
+    font-size: 2rem;
+  }
+
+  .social-links {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .profile-layout {
+    padding: 2.5rem;
+  }
+
+  .profile-image-container {
+    width: 350px;
+  }
+}
+    </style>
+  </head>
+  <body class="bg-gray-900 text-white">
+    <!-- Navigation -->
+    <nav
+      class="fixed w-full z-50 backdrop-blur-lg top-0 bg-gray-900/70 border-b border-gray-800/50"
+    >
+      <!-- <div class="max-w-7xl mx-auto px-2 sm:px-6 lg:px-0"> -->
+      <div class="w-[95%] mx-auto px-4 sm:px-6 lg:px-0">
+        <div class="flex items-center justify-between h-20">
+          <!-- Logo Section -->
+          <div class="flex items-center space-x-8">
+            <div class="flex-shrink-0">
+                <a href="index.html" class="flex items-center space-x-2 group">
+                    <div class="w-10 h-10 bg-gradient-to-tr from-purple-600 to-pink-600 rounded-lg flex items-center justify-center transform group-hover:rotate-12 transition-transform duration-300">
+                        <img src="assets/svg icons/darkLogo.svg" alt="Logo">
+                    </div>
+                    <span class="text-2xl font-bold bg-gradient-to-r from-purple-400 to-pink-500 text-transparent bg-clip-text">Tokenated</span>
+                </a>
+            </div>
+
+            <div class="hidden lg:flex items-center space-x-4">
+              <!-- Search Bar -->
+              <div class="relative">
+                <input
+                  type="search"
+                  id="searchInput"
+                  class="bg-gray-800/40 rounded-2xl pl-10 pr-10 py-2 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500 w-[300px]"
+                  placeholder="Search"
+                />
+                <span
+                  class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="h-5 w-5"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                    />
+                  </svg>
+                </span>
+                <!-- Slash Indicator -->
+                <span
+                  id="slashIndicator"
+                  class="absolute right-3 top-1/2 -translate-y-1/2 bg-gray-700 text-gray-400 text-sm px-2 py-1 rounded-full hidden sm:inline-block my-auto"
+                >
+                  /
+                </span>
+              </div>
+            </div>
+
+            <!-- Desktop Navigation Links -->
+            <div class="hidden md:flex items-center space-x-1">
+              <a
+                href="marketplace.html"
+                class="relative px-4 py-2 text-gray-300 hover:text-white transition-colors duration-300 group"
+              >
+                <span>Marketplace</span>
+                <span
+                  class="absolute inset-x-0 bottom-0 h-0.5 bg-gradient-to-r from-purple-400 to-pink-500 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"
+                ></span>
+              </a>
+              <a
+                href="topcollections.html"
+                class="relative px-4 py-2 text-gray-300 hover:text-white transition-colors duration-300 group"
+              >
+                <span>NFTs</span>
+                <span
+                  class="absolute inset-x-0 bottom-0 h-0.5 bg-gradient-to-r from-purple-400 to-pink-500 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"
+                ></span>
+              </a>
+              <a
+                href="create.html"
+                class="relative px-4 py-2 text-gray-300 hover:text-white transition-colors duration-300 group"
+              >
+                <span>Create</span>
+                <span
+                  class="absolute inset-x-0 bottom-0 h-0.5 bg-gradient-to-r from-purple-400 to-pink-500 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"
+                ></span>
+              </a>
+            </div>
+          </div>
+
+          <!-- Right Side Actions -->
+          <div class="flex items-center space-x-6">
+            <!-- Search Button -->
+            <button
+              id="searchIcon"
+              class="md:hidden p-2 text-gray-400 hover:text-white transition-colors duration-300"
+            >
+              <svg
+                id="opensearch"
+                class="w-6 h-6 block"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                />
+              </svg>
+              <svg
+                id="closesearch"
+                class="hidden"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+                stroke="currentColor"
+                x="0px"
+                y="0px"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  d="M11 0.7H13V23.3H11z"
+                  transform="rotate(-45.001 12 12)"
+                ></path>
+                <path
+                  d="M0.7 11H23.3V13H0.7z"
+                  transform="rotate(-45.001 12 12)"
+                ></path>
+              </svg>
+            </button>
+
+            <a
+              href="#"
+              id="signupButton"
+              class="hidden relative px-4 py-2 text-gray-300 hover:text-white transition-colors duration-300 group"
+            >
+              <span>sign up</span>
+              <span
+                class="absolute inset-x-0 bottom-0 h-0.5 bg-gradient-to-r from-purple-400 to-pink-500 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"
+              ></span>
+            </a>
+
+            <!-- Connect Wallet Button -->
+            <button
+            class="hidden md:flex group relative px-1 py-1 overflow-hidden rounded-3xl bg-purple-500/10 text-white font-medium shadow-lg transition-all duration-300 hover:shadow-purple-500/25 hover:shadow-xl connect-wallet-btn"
+          >
+            <div class="relative z-10 flex items-center space-x-2">
+              <svg
+                class="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"
+                />
+              </svg>
+              <span>Connect Wallet</span>
+            </div>
+          </button>
+
+            <div class="relative group hidden" id="bode">
+              <!-- Avatar Circle -->
+              <div
+                class="w-10 h-10 bg-gray-300 rounded-full overflow-hidden flex items-center justify-center"
+              >
+                <!-- Placeholder for Image -->
+                <img
+                  src="https://via.placeholder.com/48"
+                  alt="Profile"
+                  class="w-full h-full object-cover"
+                />
+              </div>
+
+              <!-- Hover Options -->
+              <div
+                id="men"
+                class="absolute top-10 left-1/2 -translate-x-1/2 bg-white shadow-lg rounded-lg p-2 min-w-[100px] hidden group-hover:block"
+              >
+                <button
+                  class="block w-full text-sm text-gray-700 hover:text-white hover:bg-purple-600 px-4 py-2 rounded-lg transition"
+                >
+                  Log in
+                </button>
+                <button
+                  class="block w-full text-sm text-gray-700 hover:text-white hover:bg-purple-600 px-4 py-2 rounded-lg transition"
+                >
+                  Sign up
+                </button>
+              </div>
+            </div>
+
+            <!-- Mobile Menu Button -->
+            <button
+              id="mobileMenuButton"
+              class="md:hidden p-2 text-gray-400 hover:text-white transition-colors duration-300"
+            >
+              <svg
+                id="menuIcon"
+                class="w-6 h-6"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M4 6h16M4 12h16m-7 6h7"
+                />
+              </svg>
+              <svg
+                id="closeIcon"
+                class="hidden w-6 h-6"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M6 18L18 6M6 6l12 12"
+                />
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Mobile Menu -->
+      <div id="mobileMenu" class="md:hidden hidden">
+        <div
+          class="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-gray-900/90 backdrop-blur-lg"
+        >
+          <a
+            href="marketplace.html"
+            class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-800 transition-all duration-300"
+            >Marketplace</a
+          >
+          <a
+            href="topcollections.html"
+            class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-800 transition-all duration-300"
+            >NFTs</a
+          >
+          <a
+            href="create.html"
+            class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-800 transition-all duration-300"
+            >Create</a
+          >
+          <button
+            id="mobileConnectButton"
+            class="w-full mt-4 px-3 py-2 bg-gradient-to-r from-purple-600 to-pink-600 rounded-md text-white font-medium hover:from-purple-700 hover:to-pink-700 transition-colors connect-wallet-btn"
+          >
+            Connect Wallet
+          </button>
+          <span id="mobileAccOptions" class="grid grid-cols-[2fr,1fr] w-full">
+            <button id="view-profile" class=" text-center px-4 py-2 bg-gray-800 rounded-xl"><i class="fa fa-user" aria-hidden="true"></i> View Profile</button>
+            <button id="logout-mobile-btn" class="text-right px-4 py-2">logout <i class="fa fa-sign-out" aria-hidden="true"></i></button>
+          </span>
+        </div>
+      </div>
+    </nav>
+    <div
+      class="lg:hidden fixed w-full z-30 backdrop-blur-lg top-[80px] left-[50%] -translate-x-[50%] bg-gray-900/70 border-b border-gray-800/50 rounded-2xl"
+    >
+      <div id="searchbar" class="items-center space-x-4 hidden">
+        <!-- Search Bar -->
+        <div class="relative">
+          <input
+            type="search"
+            id="searchInput"
+            class="bg-gray-800/40 rounded-2xl pl-10 pr-10 py-2 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500 w-full"
+            placeholder="Search"
+          />
+          <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-5 w-5"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+              />
+            </svg>
+          </span>
+          <!-- Slash Indicator -->
+          <span
+            id="slashIndicator"
+            class="absolute right-3 top-1/2 -translate-y-1/2 bg-gray-700 text-gray-400 text-sm px-2 py-1 rounded-full hidden sm:inline-block my-auto"
+          >
+            /
+          </span>
+        </div>
+      </div>
+    </div>
+
+     <!-- Search Overlay -->
+     <div
+     id="searchOverlay"
+     class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden backdrop-blur-md"
+   >
+     <div id="mobSearchBar" class="flex items-center justify-center h-full">
+       <div class="bg-gray-600 rounded-lg p-6 w-11/12 max-w-md">
+         <!-- Search Input -->
+         <div id="randitem"
+           class="flex items-center border-b-2 border-gray-200 pb-4 text-gray-200"
+         >
+           <input
+             id="mobSearch"
+             type="text"
+             placeholder="Search..."
+             class="w-full outline-none text-lg text-gray-200 bg-gray-600"
+           />
+           <button
+             id="closeSearch"
+             class="text-gray-200 hover:text-gray-900 ml-4"
+           >
+             <svg
+               xmlns="http://www.w3.org/2000/svg"
+               class="h-6 w-6"
+               fill="none"
+               viewBox="0 0 24 24"
+               stroke="currentColor"
+             >
+               <path
+                 stroke-linecap="round"
+                 stroke-linejoin="round"
+                 stroke-width="2"
+                 d="M6 18L18 6M6 6l12 12"
+               />
+             </svg>
+           </button>
+         </div>
+         <div id="mobSearchResults">
+
+         </div>
+         <!-- Optional: Recent Searches -->
+       </div>
+     </div>
+   </div>
+
+
+    <!-- Main Content -->
+    <main class="pt-24 pb-12">
+      <!-- Creator Profile -->
+      <div class="max-w-7xl mx-auto px-4">
+        <div class="profile-container">
+          <div class="profile-layout">
+            <div class="profile-info">
+              <div class="profile-image-container">
+                <div class="profile-image-wrapper">
+                  <div id="profileImage" class="profile-image">
+                    <!-- Profile image will be loaded via JS -->
+                  </div>
+                  <div class="verified-badge hidden" id="verified-badge">
+                    <i class="fas fa-check verified-icon hidden" id="verified-icon"></i>
+                  </div>
+                </div>
+                
+                <div class="name-container">
+                  <h1 class="profile-name"></h1>
+                </div>
+                <div class="wallet-container">
+                  <div class="wallet-address"> </div>
+                </div>
+              </div>
+        
+              <div class="bio-container">
+                <div class="bio-text">
+                </div>
+                
+                <div class="stats-grid">
+                  <div class="stat-card">
+                    <p id="totalItems" class="stat-value"></p>
+                    <p class="stat-label">Items</p>
+                  </div>
+                  <div class="stat-card">
+                    <p id="totalSales" class="stat-value"></p>
+                    <p class="stat-label">Sales</p>
+                  </div>
+                  <div class="stat-card">
+                    <p id="floorPrice" class="stat-value"></p>
+                    <p class="stat-label">Floor Price</p>
+                  </div>
+                </div>
+        
+                <div class="social-links-container">
+                  <div class="social-links">
+                    <!-- Social links will be populated via JS -->
+                  </div>
+                </div>
+                <button class="show-more-socials" onclick="toggleSocialLinks()">
+                  Show More
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- NFT Gallery -->
+        <div class="mt-12">
+          <!-- Filters -->
+          <div
+            class="flex flex-col sm:flex-row justify-between items-center mb-6 space-y-4 sm:space-y-0"
+          >
+            <div class="flex items-center space-x-4">
+                <h1> Featured NFTs</h1>
+              <select
+                id="sortSelect"
+                class="bg-gray-800/40 rounded-xl px-4 py-2 text-gray-300 focus:outline-none focus:ring-2 focus:ring-purple-500"
+              >
+                <option value="recent">Recently Listed</option>
+                <option value="price-asc">Price: Low to High</option>
+                <option value="price-desc">Price: High to Low</option>
+              </select>
+            </div>
+
+
+          </div>
+
+          <!-- NFT Grid -->
+          <div
+            id="nftGrid"
+            class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-5 gap-6"
+          >
+            <!-- NFT cards will be loaded via JS -->
+          </div>
+
+          <!-- Load More -->
+          <div class="text-center mt-8">
+            <button
+              id="loadMoreBtn"
+              class="px-8 py-3 bg-gray-800/40 rounded-xl text-gray-300 hover:text-white transition-colors"
+            >
+              Load More <i class="fas fa-caret-down animate-bounce"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </main>
+    <div class="footer"></div>
+    <script type="module" src="./assets/js/nftTransactionHandler.js"></script>
+    <script type="module" src="./assets/js/script.js"></script>
+    <script src="./assets/js/creatorpage.js"></script>
+    <script type="module" src="./assets/js/auth.js"></script>
+    <script type="module" src="./assets/js/search.js"></script>
+    <script type="module" src="./assets/js/mobileSearch.js"></script>
+  </body>
+</html>
+
+
+
+

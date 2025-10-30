@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web3 Wallet Guide - Tokenated</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+    <link rel="shortcut icon" href="assets/svg icons/darkLogo.svg" type="image/x-icon" />
+    <style>
+        .gradient-text {
+            background: linear-gradient(45deg, #6366F1, #A855F7, #EC4899);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            color: transparent;
+        }
+        
+        .glass-card {
+            backdrop-filter: blur(12px);
+            background: linear-gradient(145deg, rgba(255,255,255,0.05), rgba(255,255,255,0.01));
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .hover-scale {
+            transition: transform 0.3s ease;
+        }
+        
+        .hover-scale:hover {
+            transform: translateY(-5px);
+        }
+
+        .animated-gradient {
+            background: linear-gradient(-45deg, #6366F1, #A855F7, #EC4899, #6366F1);
+            background-size: 400% 400%;
+            animation: gradient 15s ease infinite;
+        }
+
+        @keyframes gradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-white">
+    <!-- Navigation -->
+    <nav
+      class="fixed w-full z-50 backdrop-blur-lg top-0 bg-gray-900/70 border-b border-gray-800/50"
+    >
+      <div class="w-[95%] mx-auto px-4 sm:px-6 lg:px-0">
+        <div class="flex items-center justify-between h-20">
+          <!-- Logo Section -->
+          <div class="flex items-center space-x-8">
+            <div class="flex-shrink-0">
+              <a href="index.html" class="flex items-center space-x-2 group">
+                <div
+                  class="w-10 h-10 bg-gradient-to-tr from-purple-600 to-pink-600 rounded-lg flex items-center justify-center transform group-hover:rotate-12 transition-transform duration-300"
+                >
+                  <img src="assets/svg icons/darkLogo.svg" alt="Logo" />
+                </div>
+                <span
+                  class="text-2xl font-bold bg-gradient-to-r from-purple-400 to-pink-500 text-transparent bg-clip-text"
+                  >Tokenated</span
+                >
+              </a>
+            </div>
+
+           
+        </div>
+      </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <div class="relative min-h-screen">
+        <div class="absolute inset-0">
+            <img src="/api/placeholder/1920/1080" alt="Background" class="w-full h-full object-cover filter brightness-25"/>
+            <div class="absolute inset-0 bg-gradient-to-b from-gray-900/90 via-gray-900/50 to-gray-900"></div>
+        </div>
+        
+        <div class="relative pt-32 pb-24 px-4 sm:px-6 lg:px-8">
+            <div class="max-w-7xl mx-auto text-center">
+                <h1 class="text-5xl md:text-7xl font-bold mb-8 gradient-text">
+                    Your Gateway to Web3
+                </h1>
+                <p class="text-xl md:text-2xl text-gray-300 max-w-3xl mx-auto leading-relaxed">
+                    Discover the power of digital ownership through secure and seamless wallet management
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="max-w-7xl mx-auto px-4  sm:px-6 lg:px-8 -mt-[450px] relative z-10 pb-24">
+        <!-- Features Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
+            <!-- What is a Wallet? -->
+            <div class="glass-card rounded-2xl p-8 hover-scale">
+                <div class="flex items-center mb-6">
+                    <div class="w-14 h-14 animated-gradient rounded-xl flex items-center justify-center mr-4">
+                        <i class="fas fa-wallet text-2xl"></i>
+                    </div>
+                    <h2 class="text-2xl font-bold gradient-text">Digital Identity</h2>
+                </div>
+                <p class="text-gray-300 mb-6 leading-relaxed">
+                    Your Web3 wallet is more than just storage—it's your digital identity in the blockchain ecosystem, providing secure access to the decentralized world.
+                </p>
+                <ul class="space-y-4">
+                    <li class="flex items-center text-gray-300">
+                        <i class="fas fa-check-circle text-indigo-400 mr-3"></i>
+                        Secure asset management
+                    </li>
+                    <li class="flex items-center text-gray-300">
+                        <i class="fas fa-check-circle text-indigo-400 mr-3"></i>
+                        Universal login for dApps
+                    </li>
+                    <li class="flex items-center text-gray-300">
+                        <i class="fas fa-check-circle text-indigo-400 mr-3"></i>
+                        Cryptocurrency transactions
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Key Benefits -->
+            <div class="glass-card rounded-2xl p-8 hover-scale">
+                <div class="flex items-center mb-6">
+                    <div class="w-14 h-14 animated-gradient rounded-xl flex items-center justify-center mr-4">
+                        <i class="fas fa-shield-alt text-2xl"></i>
+                    </div>
+                    <h2 class="text-2xl font-bold gradient-text">Key Benefits</h2>
+                </div>
+                <p class="text-gray-300 mb-6 leading-relaxed">
+                    Experience true digital ownership and seamless access to the expanding universe of Web3 applications and services.
+                </p>
+                <ul class="space-y-4">
+                    <li class="flex items-center text-gray-300">
+                        <i class="fas fa-check-circle text-indigo-400 mr-3"></i>
+                        Complete asset control
+                    </li>
+                    <li class="flex items-center text-gray-300">
+                        <i class="fas fa-check-circle text-indigo-400 mr-3"></i>
+                        Enhanced privacy
+                    </li>
+                    <li class="flex items-center text-gray-300">
+                        <i class="fas fa-check-circle text-indigo-400 mr-3"></i>
+                        Global accessibility
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Popular Solutions -->
+            <div class="glass-card rounded-2xl p-8 hover-scale">
+                <div class="flex items-center mb-6">
+                    <div class="w-14 h-14 animated-gradient rounded-xl flex items-center justify-center mr-4">
+                        <i class="fas fa-star text-2xl"></i>
+                    </div>
+                    <h2 class="text-2xl font-bold gradient-text">Top Wallets</h2>
+                </div>
+                <div class="space-y-4">
+                    <div class="p-5 glass-card rounded-xl hover:bg-white/5 transition-colors">
+                        <h3 class="font-bold mb-2 text-lg">MetaMask</h3>
+                        <p class="text-gray-300">Industry-leading browser extension with intuitive interface</p>
+                    </div>
+                    <div class="p-5 glass-card rounded-xl hover:bg-white/5 transition-colors">
+                        <h3 class="font-bold mb-2 text-lg">Trust Wallet</h3>
+                        <p class="text-gray-300">Comprehensive mobile solution for digital assets</p>
+                    </div>
+                    <div class="p-5 glass-card rounded-xl hover:bg-white/5 transition-colors">
+                        <h3 class="font-bold mb-2 text-lg">WalletConnect</h3>
+                        <p class="text-gray-300">Open protocol for seamless wallet connections</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Security Section -->
+        <div class="mt-24">
+            <h2 class="text-4xl font-bold mb-12 text-center gradient-text">Security Best Practices</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="glass-card rounded-2xl p-8 hover-scale">
+                    <div class="flex items-center mb-6">
+                        <div class="w-12 h-12 animated-gradient rounded-xl flex items-center justify-center mr-4">
+                            <i class="fas fa-key text-xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold gradient-text">Protect Your Keys</h3>
+                    </div>
+                    <p class="text-gray-300 leading-relaxed">Guard your seed phrase with utmost care. Store it offline in a secure location and never share it with anyone. This is your most crucial security measure.</p>
+                </div>
+
+                <div class="glass-card rounded-2xl p-8 hover-scale">
+                    <div class="flex items-center mb-6">
+                        <div class="w-12 h-12 animated-gradient rounded-xl flex items-center justify-center mr-4">
+                            <i class="fas fa-laptop-code text-xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold gradient-text">Hardware Security</h3>
+                    </div>
+                    <p class="text-gray-300 leading-relaxed">Consider using a hardware wallet for substantial holdings. These physical devices provide maximum security by keeping your private keys offline.</p>
+                </div>
+
+                <div class="glass-card rounded-2xl p-8 hover-scale">
+                    <div class="flex items-center mb-6">
+                        <div class="w-12 h-12 animated-gradient rounded-xl flex items-center justify-center mr-4">
+                            <i class="fas fa-search text-xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold gradient-text">Verify Everything</h3>
+                    </div>
+                    <p class="text-gray-300 leading-relaxed">Always double-check transaction details, including recipient addresses and amounts. Take your time to review before confirming any transaction.</p>
+                </div>
+
+                <div class="glass-card rounded-2xl p-8 hover-scale">
+                    <div class="flex items-center mb-6">
+                        <div class="w-12 h-12 animated-gradient rounded-xl flex items-center justify-center mr-4">
+                            <i class="fas fa-shield-alt text-xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold gradient-text">Stay Vigilant</h3>
+                    </div>
+                    <p class="text-gray-300 leading-relaxed">Be wary of unexpected offers and suspicious links. Only connect your wallet to trusted platforms and verify all requests carefully.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Getting Started Steps -->
+        <div class="mt-24">
+            <h2 class="text-4xl font-bold mb-12 text-center gradient-text">Begin Your Journey</h2>
+            <div class="max-w-3xl mx-auto space-y-8">
+                <div class="glass-card rounded-2xl p-8 hover-scale">
+                    <div class="flex items-start space-x-6">
+                        <div class="w-12 h-12 animated-gradient rounded-full flex items-center justify-center flex-shrink-0">
+                            <span class="font-bold text-xl">1</span>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-bold mb-3 gradient-text">Select Your Wallet</h3>
+                            <p class="text-gray-300 leading-relaxed">Choose a wallet that aligns with your needs. MetaMask offers a great starting point for desktop users, while Trust Wallet excels in mobile accessibility.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="glass-card rounded-2xl p-8 hover-scale">
+                    <div class="flex items-start space-x-6">
+                        <div class="w-12 h-12 animated-gradient rounded-full flex items-center justify-center flex-shrink-0">
+                            <span class="font-bold text-xl">2</span>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-bold mb-3 gradient-text">Secure Setup</h3>
+                            <p class="text-gray-300 leading-relaxed">Install from official sources and follow the setup process carefully. Secure your seed phrase immediately and keep it in a safe place.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="glass-card rounded-2xl p-8 hover-scale">
+                    <div class="flex items-start space-x-6">
+                        <div class="w-12 h-12 animated-gradient rounded-full flex items-center justify-center flex-shrink-0">
+                            <span class="font-bold text-xl">3</span>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-bold mb-3 gradient-text">Connect & Explore</h3>
+                            <p class="text-gray-300 leading-relaxed">Link your wallet to Tokenated and start exploring the vast world of digital assets. Our platform provides a secure and intuitive environment for your journey.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Call to Action -->
+        <div class="mt-24 text-center">
+            <a href="./index.html" class="inline-flex items-center px-10 py-4 animated-gradient rounded-xl hover:scale-105 transition-transform duration-300 text-lg font-semibold">
+                <span class="mr-3">Launch Your Journey</span>
+                <i class="fas fa-arrow-right"></i>
+            </a>
+        </div>
+    </div>
+    <section class="footer"></section>  
+    <!-- JavaScript -->
+    <script src="./assets/js/script.js"></script>
+</body>
+</html>
